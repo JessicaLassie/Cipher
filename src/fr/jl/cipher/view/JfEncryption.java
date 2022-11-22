@@ -19,7 +19,6 @@ import javax.swing.JFileChooser;
 
 /**
  *
- * @author Jessica LASSIE
  */
 public class JfEncryption extends javax.swing.JFrame {
     
@@ -360,7 +359,7 @@ public class JfEncryption extends javax.swing.JFrame {
                 try {
                     cryptingRSA(filePath, keyPath);
                     jDialogSuccess.setVisible(true);
-                } catch (IOException | ClassNotFoundException | InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException e) {
+                } catch (IOException | ClassNotFoundException | InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | CryptingException e) {
                     jDialogError.setVisible(true);
                     jLabelError.setText(e.getMessage());
                 }
@@ -523,7 +522,7 @@ public class JfEncryption extends javax.swing.JFrame {
      * @param filePath to encrypt or decrypt
      * @param keyFilePath to encrypt or decrypt
      */
-    private void cryptingRSA(final String filePath, final String keyFilePath) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, ClassNotFoundException {
+    private void cryptingRSA(final String filePath, final String keyFilePath) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, ClassNotFoundException, CryptingException {
         if (jRadioButtonEncrypt.isSelected()) {
             int mode = Cipher.ENCRYPT_MODE;
             ControllerEncryption.encryptRSA(mode, filePath, keyFilePath);                  

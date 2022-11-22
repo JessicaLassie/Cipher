@@ -7,13 +7,13 @@ package fr.jl.cipher.main;
 import fr.jl.cipher.view.JfEncryption;
 
 /**
- *
- * @author Jessica LASSIE
+ * 
  */
 public class Main {
     
     public static void main(String[] args) {
-        new JfEncryption();
+        JfEncryption frame = new JfEncryption();
+        frame.setVisible(true);
     }
     
 }

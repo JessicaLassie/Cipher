@@ -42,7 +42,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 /**
  *
- * @author Jessica LASSIE
  */
 public class ControllerEncryption {
     
@@ -60,8 +59,8 @@ public class ControllerEncryption {
     /**
      * Encrypt a file in AES
      * @param mode encrypt or decrypt mode
-     * @param filePath file path of input file for output file
-     * @param keyFilePath path of key
+     * @param filePath path of the file to encrypt
+     * @param keyFilePath path of the key for encrypt
      * @throws NoSuchAlgorithmException
      * @throws IOException
      * @throws InvalidKeyException
@@ -74,7 +73,7 @@ public class ControllerEncryption {
         File inputFile = new File(filePath);
         File outputFile = preFormating(mode, filePath);
         
-        if(!keyFilePath.equals("")){
+        if(keyFilePath != null && !keyFilePath.equals("")){
             // If we have a key for encrypt
             try (BufferedReader reader = new BufferedReader(new FileReader(keyFilePath))) {
                 String line;
@@ -105,8 +104,8 @@ public class ControllerEncryption {
     /**
      * Decrypt a file in AES
      * @param mode encrypt or decrypt mode
-     * @param filePath file path of input file for output file
-     * @param keyFilePath path for save the key file
+     * @param filePath path of the file to decrypt
+     * @param keyFilePath path of the key for decrypt
      * @throws IOException
      * @throws InvalidKeyException
      * @throws NoSuchAlgorithmException
@@ -118,28 +117,32 @@ public class ControllerEncryption {
     public static void decryptAES(final int mode, final String filePath, final String keyFilePath) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
         File inputFile = new File(filePath);
         File outputFile = preFormating(mode, filePath);
-        try (BufferedReader reader = new BufferedReader(new FileReader(keyFilePath))) {
-            String line;
-            String contentFile = "";
-            while ((line = reader.readLine()) != null) {
-                contentFile = line;
+        if(keyFilePath != null && !keyFilePath.equals("")) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(keyFilePath))) {
+                String line;
+                String contentFile = "";
+                while ((line = reader.readLine()) != null) {
+                    contentFile = line;
+                }
+                byte[] decodedKey = Base64.getDecoder().decode(contentFile);
+                if(decodedKey.length > 0) {
+                    SecretKey key = new SecretKeySpec(decodedKey, 0, decodedKey.length, AES);
+                    crypting(mode, key, inputFile, outputFile, AES);
+                } else {
+                    throw new CryptingException("Key is empty !");
+                }
             }
-            byte[] decodedKey = Base64.getDecoder().decode(contentFile);
-            if(decodedKey.length > 0) {
-                SecretKey key = new SecretKeySpec(decodedKey, 0, decodedKey.length, AES);
-                crypting(mode, key, inputFile, outputFile, AES);
-            } else {
-                //remonter une erreur clé vide
-                throw new CryptingException("Key is empty !");
-            }
+        } else {
+            throw new CryptingException("Key is mandatory !");
         }
+        
     }
     
     /**
      * Encrypt a file in RSA
      * @param mode encrypt or decrypt mode
-     * @param filePath file path of input file for output file
-     * @param keyFilePath path of key
+     * @param filePath path of the file to encrypt
+     * @param keyFilePath path of the key for encrypt
      * @throws InvalidKeySpecException
      * @throws NoSuchAlgorithmException
      * @throws IOException
@@ -148,6 +151,7 @@ public class ControllerEncryption {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException 
      * @throws CryptingException 
+     * @throws ClassNotFoundException 
      */
     public static void encryptRSA(final int mode, final String filePath, final String keyFilePath) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException {
         File inputFile = new File(filePath);
@@ -176,8 +180,8 @@ public class ControllerEncryption {
     /**
      * Decrypt a file in RSA
      * @param mode encrypt or decrypt mode
-     * @param filePath file path of input file for output file
-     * @param keyFilePath path for save the key file
+     * @param filePath path of the file to decrypt
+     * @param keyFilePath path of the key for decrypt
      * @throws IOException
      * @throws ClassNotFoundException
      * @throws NoSuchAlgorithmException
@@ -360,7 +364,7 @@ public class ControllerEncryption {
      * @param key key for encrypt or decrypt
      * @param inputFile file to encrypt or decrypt
      * @param outputFile encrypted file or decrypted file
-     * @param algorithm of crypting
+     * @param algorithm algorithm of crypting
      * @throws IOException
      * @throws InvalidKeyException
      * @throws NoSuchAlgorithmException
