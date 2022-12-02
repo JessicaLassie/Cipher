@@ -151,17 +151,29 @@
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="jLabelKey" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="jButtonGenerateKeys" alignment="0" max="32767" attributes="0"/>
                           <Component id="jSeparator3" alignment="0" max="32767" attributes="0"/>
                           <Component id="jSeparator1" alignment="0" max="32767" attributes="0"/>
                           <Component id="jComboBoxEncrypt" alignment="0" max="32767" attributes="0"/>
                           <Component id="jButtonStart" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jSeparator2" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabelKey" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="292" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jTextFieldSelectedKey" min="-2" pref="214" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="jButtonSearchKey" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jButtonClearKey" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                          </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
@@ -170,23 +182,14 @@
                                       <Component id="jButtonSearchFile" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jLabelFile" min="-2" max="-2" attributes="0"/>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jTextFieldSelectedKey" min="-2" pref="214" max="-2" attributes="0"/>
-                                              <EmptySpace max="32767" attributes="0"/>
-                                              <Component id="jButtonSearchKey" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabelFile" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
                                   </Group>
                               </Group>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jButtonClearFile" alignment="1" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jButtonClearKey" alignment="1" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="jButtonClearFile" min="-2" max="-2" attributes="0"/>
                           </Group>
+                          <Component id="jSeparator2" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                   </Group>
@@ -209,20 +212,22 @@
               <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
               <Component id="jComboBoxEncrypt" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="jSeparator2" min="-2" pref="10" max="-2" attributes="0"/>
+              <Component id="jButtonGenerateKeys" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="jSeparator3" min="-2" pref="10" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabelKey" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="jButtonClearKey" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
+                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                       <Component id="jTextFieldSelectedKey" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButtonSearchKey" alignment="3" max="32767" attributes="0"/>
+                      <Component id="jButtonSearchKey" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="jSeparator3" min="-2" pref="10" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jSeparator2" min="-2" pref="2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jLabelFile" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -234,7 +239,7 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jButtonStart" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="38" max="32767" attributes="0"/>
+              <EmptySpace pref="40" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -284,6 +289,9 @@
           <StringArray count="0"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBoxEncryptActionPerformed"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
@@ -340,6 +348,11 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonSearchKeyActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonGenerateKeys">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Generate keys"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
