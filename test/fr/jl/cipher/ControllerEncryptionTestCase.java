@@ -14,11 +14,11 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  *
- * @author Jessica LASSIE
  */
 public class ControllerEncryptionTestCase extends AbstractControllerEncryptionTestCase {
        
@@ -49,21 +49,53 @@ public class ControllerEncryptionTestCase extends AbstractControllerEncryptionTe
     }
     
     @Test
+    public void testSuccessfullEncryptAESWithNullKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException{        
+        verifySuccessfullEncryptAESWithNullKey();
+    }
+    
+    @Test
+    (expected=CryptingException.class)
+    public void testErrorEncryptAESWithEmptyKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException{        
+        verifyErrorEncryptAESWithEmptyKey();
+    }
+    
+    @Test
     public void testSuccessfullDecryptAES() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException{
         verifySuccessfullDecryptAES();
     }
     
     @Test
-    public void testSuccessfullEncryptRSAWithoutKey() throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException{
+    (expected=CryptingException.class)
+    public void testErrorDecryptAESWithNullKey() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException{
+        verifyErrorDecryptAESWithNullKey();
+    }
+    
+    @Test
+    (expected=CryptingException.class)
+    public void testErrorDecryptAESWithEmptyFileKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException, InvalidKeySpecException{        
+        verifyErrorDecryptAESWithEmptyFileKey();
+    }
+    
+    @Test
+    (expected=CryptingException.class)
+    public void testErrorDecryptAESWithEmptyKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException, InvalidKeySpecException{        
+        verifyErrorDecryptAESWithEmptyKey();
+    }
+    
+    @Test
+    @Ignore
+    public void testSuccessfullEncryptRSAWithoutKey() throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException{
         verifySuccessfullEncryptRSAWithoutKey();
     }
     
     @Test
-    public void testSuccessfullEncryptRSAWithKey() throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException{
+    @Ignore
+    public void testSuccessfullEncryptRSAWithKey() throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException{
         verifySuccessfullEncryptRSAWithKey();
     }
         
     @Test
+    @Ignore
     public void testSuccessfullDecryptRSA() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException{
         verifySuccessfullDecryptRSA();
     }

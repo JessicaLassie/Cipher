@@ -5,17 +5,16 @@
 package fr.jl.cipher.controller;
 
 /**
- *
- * @author Jessica LASSIE
+ * Exception who can occurs during encryption or decryption
  */
 public class CryptingException extends Exception {
-    
-    private final String message;
 
-    public CryptingException(String message) {
-        this.message = message;
+    /**
+     * Exception during encryption or decryption
+     * @param message The detail message of exception
+     */
+    public CryptingException(final String message) {
+        super(message);
     }
-    
-    
-    
+        
 }
