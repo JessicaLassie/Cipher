@@ -70,4 +70,6 @@
     nbproject/build-impl.xml file. 
 
     -->
+
+	<target name="-do-compile-test" depends=""/>
 </project>
