@@ -108,6 +108,8 @@
     </Container>
     <Component class="javax.swing.JFileChooser" name="jFileKeyChooser">
     </Component>
+    <Component class="javax.swing.JFileChooser" name="jFolderGeneratedFilesKeysChooser">
+    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
@@ -156,14 +158,11 @@
                           <Component id="jButtonGenerateKeys" alignment="0" max="32767" attributes="0"/>
                           <Component id="jSeparator3" alignment="0" max="32767" attributes="0"/>
                           <Component id="jSeparator1" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jComboBoxEncrypt" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jComboBoxAlgorithm" alignment="0" max="32767" attributes="0"/>
                           <Component id="jButtonStart" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="1" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jLabelKey" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="292" max="32767" attributes="0"/>
-                                  </Group>
+                                  <Component id="jLabelKey" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jTextFieldSelectedKey" min="-2" pref="214" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
@@ -210,7 +209,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabelEncrypt" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-              <Component id="jComboBoxEncrypt" min="-2" max="-2" attributes="0"/>
+              <Component id="jComboBoxAlgorithm" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jButtonGenerateKeys" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -283,14 +282,14 @@
         <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jRadioButtonDecryptStateChanged"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JComboBox" name="jComboBoxEncrypt">
+    <Component class="javax.swing.JComboBox" name="jComboBoxAlgorithm">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="0"/>
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBoxEncryptActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jComboBoxAlgorithmActionPerformed"/>
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -303,7 +302,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelKey">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Key"/>
+        <Property name="text" type="java.lang.String" value="Key *"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonClearKey">
@@ -351,8 +350,11 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButtonGenerateKeys">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Generate keys"/>
+        <Property name="text" type="java.lang.String" value="Generate RSA keys"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonGenerateKeysActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

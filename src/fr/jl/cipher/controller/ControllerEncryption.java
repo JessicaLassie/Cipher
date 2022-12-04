@@ -139,6 +139,18 @@ public class ControllerEncryption {
     }
     
     /**
+     * Generate and save the RSA keys
+     * @param outputPath the path for save the RSA keys
+     * @throws NoSuchAlgorithmException
+     * @throws InvalidKeySpecException
+     * @throws IOException 
+     */
+    public static void generateAndSaveRSAKeys(String outputPath) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
+        KeyPair keyPair = generateRSAKeyPair();
+        saveRSAKeyPair(keyPair, outputPath);
+    }
+    
+    /**
      * Encrypt a file in RSA
      * @param mode encrypt or decrypt mode
      * @param filePath path of the file to encrypt
@@ -157,7 +169,7 @@ public class ControllerEncryption {
         File inputFile = new File(filePath);
         File outputFile = preFormating(mode, filePath);  
         
-        if(!keyFilePath.equals("")){
+        if(keyFilePath != null && !keyFilePath.equals("")){
             // If we have a key for encrypt
             PublicKey publicKey = getRSAPublicKey(keyFilePath);
             if (publicKey != null) {
@@ -167,13 +179,8 @@ public class ControllerEncryption {
                 throw new CryptingException("Key is empty !");
             }                   
         } else {
-            // If we DON'T have a key for encrypt
-            // Generate the keys
-            KeyPair keyPair = generateRSAKeyPair();
-            ArrayList<File> keysFiles = saveRSAKeyPair(keyPair, outputFile.getParent());
-            if (keysFiles.size() == 2){
-                crypting(mode, keyPair.getPublic(), inputFile, outputFile, RSA);
-            }  
+            //remonter une erreur clé obligatoire
+            throw new CryptingException("Key is mandatory !");  
         }
     }
     
@@ -191,12 +198,21 @@ public class ControllerEncryption {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException 
      */
-    public static void decryptRSA(final int mode, final String filePath, final String keyFilePath) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+    public static void decryptRSA(final int mode, final String filePath, final String keyFilePath) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
         File inputFile = new File(filePath);
         File outputFile = preFormating(mode, filePath);
-        PrivateKey privateKey = getRSAPrivateKey(keyFilePath);
-        if (privateKey != null) {
-            crypting(mode, privateKey, inputFile, outputFile, RSA);
+        
+        if(keyFilePath != null && !keyFilePath.equals("")){
+            PrivateKey privateKey = getRSAPrivateKey(keyFilePath);
+            if (privateKey != null) {
+                crypting(mode, privateKey, inputFile, outputFile, RSA);
+            } else {
+                //remonter une erreur clé vide
+                throw new CryptingException("Key is empty !");
+            }                   
+        } else {
+            //remonter une erreur clé obligatoire
+            throw new CryptingException("Key is mandatory !");  
         }
     }
     
