@@ -32,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Objects;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -57,6 +58,18 @@ public class ControllerEncryption {
     };
     
     /**
+     * Generate and save the AES key
+     * @param outputPath the path for save the AES key
+     * @throws NoSuchAlgorithmException
+     * @throws IOException 
+     */
+    public static void generateAndSaveAESKey(String outputPath) throws NoSuchAlgorithmException, IOException{
+        Objects.requireNonNull(outputPath, "Output folder is mandatory !");
+        SecretKey key = generateAESKey();
+        saveAESKey(key, outputPath);
+    }
+    
+    /**
      * Encrypt a file in AES
      * @param mode encrypt or decrypt mode
      * @param filePath path of the file to encrypt
@@ -70,11 +83,14 @@ public class ControllerEncryption {
      * @throws CryptingException 
      */
     public static void encryptAES(final int mode, final String filePath, final String keyFilePath) throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+        Objects.requireNonNull(mode, "Mode is mandatory !");
+        Objects.requireNonNull(filePath, "File to encrypt is mandatory !");
+        Objects.requireNonNull(keyFilePath, "Key is mandatory !");
+        
         File inputFile = new File(filePath);
         File outputFile = preFormating(mode, filePath);
         
-        if(keyFilePath != null && !keyFilePath.equals("")){
-            // If we have a key for encrypt
+        if(!keyFilePath.equals("")){
             try (BufferedReader reader = new BufferedReader(new FileReader(keyFilePath))) {
                 String line;
                 String contentFile = "";
@@ -90,13 +106,7 @@ public class ControllerEncryption {
                 }
             }
         } else {
-            // If we DON'T have a key for encrypt
-            // Generate a key
-            SecretKey key = generateAESKey();
-            File keyFile = saveAESKey(key, outputFile.getParent());
-            if (key != null && keyFile.exists()){
-                crypting(mode, key, inputFile, outputFile, AES);
-            }
+            throw new CryptingException("Key is mandatory !");             
         }
                    
     }
@@ -115,9 +125,13 @@ public class ControllerEncryption {
      * @throws CryptingException 
      */
     public static void decryptAES(final int mode, final String filePath, final String keyFilePath) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+        Objects.requireNonNull(mode, "Mode is mandatory !");
+        Objects.requireNonNull(filePath, "File to decrypt is mandatory !");
+        Objects.requireNonNull(keyFilePath, "Key is mandatory !");
+        
         File inputFile = new File(filePath);
         File outputFile = preFormating(mode, filePath);
-        if(keyFilePath != null && !keyFilePath.equals("")) {
+        if(!keyFilePath.equals("")) {
             try (BufferedReader reader = new BufferedReader(new FileReader(keyFilePath))) {
                 String line;
                 String contentFile = "";
@@ -146,6 +160,8 @@ public class ControllerEncryption {
      * @throws IOException 
      */
     public static void generateAndSaveRSAKeys(String outputPath) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
+        Objects.requireNonNull(outputPath, "Output folder is mandatory !");
+        
         KeyPair keyPair = generateRSAKeyPair();
         saveRSAKeyPair(keyPair, outputPath);
     }
@@ -166,20 +182,21 @@ public class ControllerEncryption {
      * @throws ClassNotFoundException 
      */
     public static void encryptRSA(final int mode, final String filePath, final String keyFilePath) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException {
+        Objects.requireNonNull(mode, "Mode is mandatory !");
+        Objects.requireNonNull(filePath, "File to encrypt is mandatory !");
+        Objects.requireNonNull(keyFilePath, "Key is mandatory !");
+        
         File inputFile = new File(filePath);
         File outputFile = preFormating(mode, filePath);  
         
-        if(keyFilePath != null && !keyFilePath.equals("")){
-            // If we have a key for encrypt
+        if(!keyFilePath.equals("")){
             PublicKey publicKey = getRSAPublicKey(keyFilePath);
             if (publicKey != null) {
                 crypting(mode, publicKey, inputFile, outputFile, RSA);
             } else {
-                //remonter une erreur clé vide
                 throw new CryptingException("Key is empty !");
             }                   
         } else {
-            //remonter une erreur clé obligatoire
             throw new CryptingException("Key is mandatory !");  
         }
     }
@@ -199,19 +216,21 @@ public class ControllerEncryption {
      * @throws BadPaddingException 
      */
     public static void decryptRSA(final int mode, final String filePath, final String keyFilePath) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+        Objects.requireNonNull(mode, "Mode is mandatory !");
+        Objects.requireNonNull(filePath, "File to decrypt is mandatory !");
+        Objects.requireNonNull(keyFilePath, "Key is mandatory !");
+        
         File inputFile = new File(filePath);
         File outputFile = preFormating(mode, filePath);
         
-        if(keyFilePath != null && !keyFilePath.equals("")){
+        if(!keyFilePath.equals("")){
             PrivateKey privateKey = getRSAPrivateKey(keyFilePath);
             if (privateKey != null) {
                 crypting(mode, privateKey, inputFile, outputFile, RSA);
             } else {
-                //remonter une erreur clé vide
                 throw new CryptingException("Key is empty !");
             }                   
         } else {
-            //remonter une erreur clé obligatoire
             throw new CryptingException("Key is mandatory !");  
         }
     }
