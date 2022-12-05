@@ -179,29 +179,8 @@ public class JfEncryption extends javax.swing.JFrame {
         });
 
         jRadioButtonEncrypt.setText("Encrypt");
-        jRadioButtonEncrypt.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jRadioButtonEncryptStateChanged(evt);
-            }
-        });
-        jRadioButtonEncrypt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButtonEncryptActionPerformed(evt);
-            }
-        });
 
         jRadioButtonDecrypt.setText("Decrypt");
-        jRadioButtonDecrypt.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jRadioButtonDecryptStateChanged(evt);
-            }
-        });
-
-        jComboBoxAlgorithm.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxAlgorithmActionPerformed(evt);
-            }
-        });
 
         jLabelEncrypt.setText("Algorythm");
 
@@ -363,6 +342,9 @@ public class JfEncryption extends javax.swing.JFrame {
 
     private void jButtonClearFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearFileActionPerformed
         jTextFieldSelectedFile.setText("");
+        if(jTextFieldSelectedKey.getText().equals("") || jTextFieldSelectedFile.getText().equals("")) {
+            jButtonStart.setEnabled(false);
+        }
     }//GEN-LAST:event_jButtonClearFileActionPerformed
 
     private void jButtonStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStartActionPerformed
@@ -392,35 +374,6 @@ public class JfEncryption extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonStartActionPerformed
 
-    private void jRadioButtonDecryptStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jRadioButtonDecryptStateChanged
-        if (jRadioButtonDecrypt.isSelected()) {
-            if(jTextFieldSelectedFile.getText().equals("") || jTextFieldSelectedKey.getText().equals("")) {
-                jButtonStart.setEnabled(false);
-            } else {
-                jButtonStart.setEnabled(true);
-            }
-        }
-    }//GEN-LAST:event_jRadioButtonDecryptStateChanged
-
-    private void jRadioButtonEncryptStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jRadioButtonEncryptStateChanged
-        if (jRadioButtonEncrypt.isSelected()) {
-            if(jTextFieldSelectedFile.getText().equals("")) {
-                jButtonStart.setEnabled(false);
-            } else {
-                if(jComboBoxAlgorithm.getSelectedItem().toString().equals("AES")) {
-                    jButtonStart.setEnabled(true);
-                } else {
-                    if(jTextFieldSelectedKey.getText().equals("")) {
-                        jButtonStart.setEnabled(false);
-                    } else {
-                        jButtonStart.setEnabled(true);
-                    }
-                }
-                
-            }
-        }
-    }//GEN-LAST:event_jRadioButtonEncryptStateChanged
-
     private void jButtonDialogErrorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDialogErrorActionPerformed
         jDialogError.setVisible(false);
     }//GEN-LAST:event_jButtonDialogErrorActionPerformed
@@ -431,16 +384,18 @@ public class JfEncryption extends javax.swing.JFrame {
 
     private void jButtonClearKeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearKeyActionPerformed
         jTextFieldSelectedKey.setText("");
+        if(jTextFieldSelectedKey.getText().equals("") || jTextFieldSelectedFile.getText().equals("")) {
+            jButtonStart.setEnabled(false);
+        }
     }//GEN-LAST:event_jButtonClearKeyActionPerformed
-
-    private void jRadioButtonEncryptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButtonEncryptActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButtonEncryptActionPerformed
 
     private void jButtonSearchFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSearchFileActionPerformed
         final int value = jFileChooser.showOpenDialog(this);
         if(value == JFileChooser.APPROVE_OPTION){
             jTextFieldSelectedFile.setText(jFileChooser.getSelectedFile().getAbsolutePath());
+            if(!jTextFieldSelectedKey.getText().equals("") && !jTextFieldSelectedFile.getText().equals("")) {
+                jButtonStart.setEnabled(true);
+            }
         }
     }//GEN-LAST:event_jButtonSearchFileActionPerformed
 
@@ -448,6 +403,9 @@ public class JfEncryption extends javax.swing.JFrame {
         final int value = jFileKeyChooser.showOpenDialog(this);
         if(value == JFileChooser.APPROVE_OPTION){
             jTextFieldSelectedKey.setText(jFileKeyChooser.getSelectedFile().getAbsolutePath());
+            if(!jTextFieldSelectedKey.getText().equals("") && !jTextFieldSelectedFile.getText().equals("")) {
+                jButtonStart.setEnabled(true);
+            }
         }
     }//GEN-LAST:event_jButtonSearchKeyActionPerformed
 
@@ -460,7 +418,7 @@ public class JfEncryption extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldSelectedKeyInputMethodTextChanged
 
     private void jTextFieldSelectedKeyPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTextFieldSelectedKeyPropertyChange
-        
+
     }//GEN-LAST:event_jTextFieldSelectedKeyPropertyChange
 
     private void jTextFieldSelectedFilePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTextFieldSelectedFilePropertyChange
@@ -470,30 +428,6 @@ public class JfEncryption extends javax.swing.JFrame {
     private void jTextFieldSelectedFileInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jTextFieldSelectedFileInputMethodTextChanged
 
     }//GEN-LAST:event_jTextFieldSelectedFileInputMethodTextChanged
-
-    private void jComboBoxAlgorithmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxAlgorithmActionPerformed
-        if(jComboBoxAlgorithm.getSelectedItem().toString().equals("RSA")) {
-            if(jTextFieldSelectedFile.getText().equals("") || jTextFieldSelectedKey.getText().equals("")) {
-                jButtonStart.setEnabled(false);
-            } else {
-                jButtonStart.setEnabled(true);
-            }
-        } else {
-            if(jRadioButtonEncrypt.isSelected()) {
-                if(jTextFieldSelectedFile.getText().equals("")) {
-                    jButtonStart.setEnabled(false);
-                } else {
-                    jButtonStart.setEnabled(true);
-                }
-            } else {
-                if(jTextFieldSelectedFile.getText().equals("") || jTextFieldSelectedKey.getText().equals("")) {
-                    jButtonStart.setEnabled(false);
-                } else {
-                    jButtonStart.setEnabled(true);
-                }
-            }
-        }
-    }//GEN-LAST:event_jComboBoxAlgorithmActionPerformed
 
     private void jButtonGenerateKeysActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerateKeysActionPerformed
         jFolderGeneratedFilesKeysChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
