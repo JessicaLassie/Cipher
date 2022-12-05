@@ -4,7 +4,8 @@
  */
 package fr.jl.cipher.view;
 
-import fr.jl.cipher.controller.ControllerEncryption;
+import fr.jl.cipher.controller.EncryptionController;
+import fr.jl.cipher.controller.KeysController;
 import fr.jl.cipher.controller.CryptingException;
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -389,7 +390,7 @@ public class JfEncryption extends javax.swing.JFrame {
             switch (jComboBoxAlgorithm.getSelectedItem().toString()) {
             case AES:
                 try {
-                    ControllerEncryption.generateAndSaveAESKey(jFolderGeneratedFilesKeysChooser.getSelectedFile().getAbsolutePath());
+                    KeysController.generateAndSaveAESKey(jFolderGeneratedFilesKeysChooser.getSelectedFile().getAbsolutePath());
                     jDialogSuccess.setVisible(true);
                 } catch (NoSuchAlgorithmException | IOException e) {
                     jDialogError.setVisible(true);
@@ -398,7 +399,7 @@ public class JfEncryption extends javax.swing.JFrame {
                 break;
             case RSA:                
                 try {
-                    ControllerEncryption.generateAndSaveRSAKeys(jFolderGeneratedFilesKeysChooser.getSelectedFile().getAbsolutePath());
+                    KeysController.generateAndSaveRSAKeys(jFolderGeneratedFilesKeysChooser.getSelectedFile().getAbsolutePath());
                     jDialogSuccess.setVisible(true);
                 } catch (NoSuchAlgorithmException | InvalidKeySpecException | IOException e) {
                     jDialogError.setVisible(true);
@@ -480,11 +481,11 @@ public class JfEncryption extends javax.swing.JFrame {
     private void cryptingAES(final String filePath, final String keyFilePath) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
         if (jRadioButtonEncrypt.isSelected()) {
             int mode = Cipher.ENCRYPT_MODE;
-            ControllerEncryption.encryptAES(mode, filePath, keyFilePath);
+            EncryptionController.encryptAES(mode, filePath, keyFilePath);
         }
         if (jRadioButtonDecrypt.isSelected()) {
             int mode = Cipher.DECRYPT_MODE;
-            ControllerEncryption.decryptAES(mode, filePath, keyFilePath);
+            EncryptionController.decryptAES(mode, filePath, keyFilePath);
             
         }
     }
@@ -497,11 +498,11 @@ public class JfEncryption extends javax.swing.JFrame {
     private void cryptingRSA(final String filePath, final String keyFilePath) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, ClassNotFoundException, CryptingException {
         if (jRadioButtonEncrypt.isSelected()) {
             int mode = Cipher.ENCRYPT_MODE;
-            ControllerEncryption.encryptRSA(mode, filePath, keyFilePath);                  
+            EncryptionController.encryptRSA(mode, filePath, keyFilePath);                  
         }
         if (jRadioButtonDecrypt.isSelected()) {
             int mode = Cipher.DECRYPT_MODE;
-            ControllerEncryption.decryptRSA(mode, filePath, keyFilePath);
+            EncryptionController.decryptRSA(mode, filePath, keyFilePath);
         }
     }
 }

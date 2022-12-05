@@ -4,7 +4,7 @@
  */
 package fr.jl.cipher;
 
-import fr.jl.cipher.controller.ControllerEncryption;
+import fr.jl.cipher.controller.EncryptionController;
 import fr.jl.cipher.controller.CryptingException;
 import java.io.BufferedReader;
 import java.io.File;
@@ -43,7 +43,7 @@ abstract class AbstractControllerEncryptionTestCase {
     private final static String RSA_PUBLIC_KEY_PATH = PATH + "\\" + KEY_TO_RSA_ENCRYPT;
     
     protected void verifySuccessfullEncryptAESWithoutKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
-        ControllerEncryption.encryptAES(ENCRYPT_MODE, FILE_PATH, "");
+        EncryptionController.encryptAES(ENCRYPT_MODE, FILE_PATH, "");
         File dir = new File(PATH);
         File[] files = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED)|| name.startsWith(KEY));
         assertEquals(2, files.length);
@@ -55,7 +55,7 @@ abstract class AbstractControllerEncryptionTestCase {
     }
     
     protected void verifySuccessfullEncryptAESWithKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
-        ControllerEncryption.encryptAES(ENCRYPT_MODE, FILE_PATH, AES_KEY_PATH);
+        EncryptionController.encryptAES(ENCRYPT_MODE, FILE_PATH, AES_KEY_PATH);
         File dir = new File(PATH);
         File[] files = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED));
         assertEquals(1, files.length);
@@ -67,7 +67,7 @@ abstract class AbstractControllerEncryptionTestCase {
     }
     
     protected void verifySuccessfullEncryptAESWithNullKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
-        ControllerEncryption.encryptAES(ENCRYPT_MODE, FILE_PATH, null);
+        EncryptionController.encryptAES(ENCRYPT_MODE, FILE_PATH, null);
         File dir = new File(PATH);
         File[] files = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED)|| name.startsWith(KEY));
         assertEquals(2, files.length);
@@ -79,17 +79,17 @@ abstract class AbstractControllerEncryptionTestCase {
     }
     
     protected void verifyErrorEncryptAESWithEmptyKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
-        ControllerEncryption.encryptAES(ENCRYPT_MODE, FILE_PATH, EMPTY_KEY_PATH);
+        EncryptionController.encryptAES(ENCRYPT_MODE, FILE_PATH, EMPTY_KEY_PATH);
     }
     
     protected void verifySuccessfullDecryptAES() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
         //Encrypt
-        ControllerEncryption.encryptAES(ENCRYPT_MODE, FILE_PATH, "");
+        EncryptionController.encryptAES(ENCRYPT_MODE, FILE_PATH, "");
         //Decrypt
         File dir = new File(PATH);
         File[] filesKey = dir.listFiles((dir1, name) -> name.startsWith(KEY));
         File[] filesEncrypted = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED));
-        ControllerEncryption.decryptAES(DECRYPT_MODE, PATH + "\\" + filesEncrypted[0].getName(), PATH + "\\" + filesKey[0].getName());
+        EncryptionController.decryptAES(DECRYPT_MODE, PATH + "\\" + filesEncrypted[0].getName(), PATH + "\\" + filesKey[0].getName());
         File[] filesDecrypted = dir.listFiles((dir1, name) -> name.contains(DECRYPTED));
         assertEquals(1, filesDecrypted.length);
         for(File file : filesDecrypted) {
@@ -101,33 +101,33 @@ abstract class AbstractControllerEncryptionTestCase {
     
     protected void verifyErrorDecryptAESWithNullKey() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
         //Encrypt
-        ControllerEncryption.encryptAES(ENCRYPT_MODE, FILE_PATH, "");
+        EncryptionController.encryptAES(ENCRYPT_MODE, FILE_PATH, "");
         //Decrypt
         File dir = new File(PATH);
         File[] filesEncrypted = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED));
-        ControllerEncryption.decryptAES(DECRYPT_MODE, PATH + "\\" + filesEncrypted[0].getName(), null);
+        EncryptionController.decryptAES(DECRYPT_MODE, PATH + "\\" + filesEncrypted[0].getName(), null);
     }
     
     protected void verifyErrorDecryptAESWithEmptyFileKey() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
         //Encrypt
-        ControllerEncryption.encryptAES(ENCRYPT_MODE, FILE_PATH, "");
+        EncryptionController.encryptAES(ENCRYPT_MODE, FILE_PATH, "");
         //Decrypt
         File dir = new File(PATH);
         File[] filesEncrypted = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED));
-        ControllerEncryption.decryptAES(DECRYPT_MODE, PATH + "\\" + filesEncrypted[0].getName(), "");
+        EncryptionController.decryptAES(DECRYPT_MODE, PATH + "\\" + filesEncrypted[0].getName(), "");
     }
     
     protected void verifyErrorDecryptAESWithEmptyKey() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
         //Encrypt
-        ControllerEncryption.encryptAES(ENCRYPT_MODE, FILE_PATH, "");
+        EncryptionController.encryptAES(ENCRYPT_MODE, FILE_PATH, "");
         //Decrypt
         File dir = new File(PATH);
         File[] filesEncrypted = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED));
-        ControllerEncryption.decryptAES(DECRYPT_MODE, PATH + "\\" + filesEncrypted[0].getName(), EMPTY_KEY_PATH);
+        EncryptionController.decryptAES(DECRYPT_MODE, PATH + "\\" + filesEncrypted[0].getName(), EMPTY_KEY_PATH);
     }
     
     protected void verifySuccessfullEncryptRSAWithoutKey() throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException {
-        ControllerEncryption.encryptRSA(ENCRYPT_MODE, FILE_PATH, "");
+        EncryptionController.encryptRSA(ENCRYPT_MODE, FILE_PATH, "");
         File dir = new File(PATH);
         File[] files = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED)|| name.startsWith(PUBLIC_KEY) || name.startsWith(PRIVATE_KEY));
         assertEquals(3, files.length);
@@ -139,7 +139,7 @@ abstract class AbstractControllerEncryptionTestCase {
     }
     
     protected void verifySuccessfullEncryptRSAWithKey() throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException {
-        ControllerEncryption.encryptRSA(ENCRYPT_MODE, FILE_PATH, RSA_PUBLIC_KEY_PATH);
+        EncryptionController.encryptRSA(ENCRYPT_MODE, FILE_PATH, RSA_PUBLIC_KEY_PATH);
         File dir = new File(PATH);
         File[] files = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED));
         assertEquals(1, files.length);
@@ -152,12 +152,12 @@ abstract class AbstractControllerEncryptionTestCase {
     
     protected void verifySuccessfullDecryptRSA() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
         //Encrypt
-        ControllerEncryption.encryptRSA(ENCRYPT_MODE, FILE_PATH, "");
+        EncryptionController.encryptRSA(ENCRYPT_MODE, FILE_PATH, "");
         //Decrypt
         File dir = new File(PATH);
         File[] filesKey = dir.listFiles((dir1, name) -> name.startsWith(PRIVATE_KEY));
         File[] filesEncrypted = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED));
-        ControllerEncryption.decryptRSA(DECRYPT_MODE, PATH + "\\" + filesEncrypted[0].getName(), PATH + "\\" + filesKey[0].getName());
+        EncryptionController.decryptRSA(DECRYPT_MODE, PATH + "\\" + filesEncrypted[0].getName(), PATH + "\\" + filesKey[0].getName());
         File[] filesDecrypted = dir.listFiles((dir1, name) -> name.contains(DECRYPTED));
         assertEquals(1, filesDecrypted.length);
         for(File file : filesDecrypted) {
