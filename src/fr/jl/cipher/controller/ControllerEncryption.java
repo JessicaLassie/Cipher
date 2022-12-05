@@ -29,7 +29,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Objects;
@@ -53,9 +52,12 @@ public class ControllerEncryption {
     private static final String PUBLIC_KEY = "\\public_key_";
     private static final String PRIVATE_KEY = "\\private_key_";
     private static final String TXT_EXTENSION = ".txt";
-    
-    private ControllerEncryption() { 
-    };
+    private static final String MANDATORY_OUTPUT_FOLDER = "Output folder is mandatory !";
+    private static final String MANDATORY_MODE = "Mode is mandatory !";
+    private static final String MANDATORY_FILE_ENCRYPT = "File to encrypt is mandatory !";
+    private static final String MANDATORY_FILE_DECRYPT = "File to decrypt is mandatory !";
+    private static final String MANDATORY_KEY = "Key is mandatory !";
+    private static final String EMPTY_KEY = "Key is empty !";
     
     /**
      * Generate and save the AES key
@@ -64,7 +66,7 @@ public class ControllerEncryption {
      * @throws IOException 
      */
     public static void generateAndSaveAESKey(String outputPath) throws NoSuchAlgorithmException, IOException{
-        Objects.requireNonNull(outputPath, "Output folder is mandatory !");
+        Objects.requireNonNull(outputPath, MANDATORY_OUTPUT_FOLDER);
         SecretKey key = generateAESKey();
         saveAESKey(key, outputPath);
     }
@@ -83,9 +85,9 @@ public class ControllerEncryption {
      * @throws CryptingException 
      */
     public static void encryptAES(final int mode, final String filePath, final String keyFilePath) throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
-        Objects.requireNonNull(mode, "Mode is mandatory !");
-        Objects.requireNonNull(filePath, "File to encrypt is mandatory !");
-        Objects.requireNonNull(keyFilePath, "Key is mandatory !");
+        Objects.requireNonNull(mode, MANDATORY_MODE);
+        Objects.requireNonNull(filePath, MANDATORY_FILE_ENCRYPT);
+        Objects.requireNonNull(keyFilePath, MANDATORY_KEY);
         
         File inputFile = new File(filePath);
         File outputFile = preFormating(mode, filePath);
@@ -102,11 +104,11 @@ public class ControllerEncryption {
                     SecretKey key = new SecretKeySpec(encodedKey, 0, encodedKey.length, AES);
                     crypting(mode, key, inputFile, outputFile, AES);
                 } else {
-                    throw new CryptingException("Key is empty !");
+                    throw new CryptingException(EMPTY_KEY);
                 }
             }
         } else {
-            throw new CryptingException("Key is mandatory !");             
+            throw new CryptingException(MANDATORY_KEY);             
         }
                    
     }
@@ -125,9 +127,9 @@ public class ControllerEncryption {
      * @throws CryptingException 
      */
     public static void decryptAES(final int mode, final String filePath, final String keyFilePath) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
-        Objects.requireNonNull(mode, "Mode is mandatory !");
-        Objects.requireNonNull(filePath, "File to decrypt is mandatory !");
-        Objects.requireNonNull(keyFilePath, "Key is mandatory !");
+        Objects.requireNonNull(mode, MANDATORY_MODE);
+        Objects.requireNonNull(filePath, MANDATORY_FILE_DECRYPT);
+        Objects.requireNonNull(keyFilePath, MANDATORY_KEY);
         
         File inputFile = new File(filePath);
         File outputFile = preFormating(mode, filePath);
@@ -143,11 +145,11 @@ public class ControllerEncryption {
                     SecretKey key = new SecretKeySpec(decodedKey, 0, decodedKey.length, AES);
                     crypting(mode, key, inputFile, outputFile, AES);
                 } else {
-                    throw new CryptingException("Key is empty !");
+                    throw new CryptingException(EMPTY_KEY);
                 }
             }
         } else {
-            throw new CryptingException("Key is mandatory !");
+            throw new CryptingException(MANDATORY_KEY);
         }
         
     }
@@ -160,7 +162,7 @@ public class ControllerEncryption {
      * @throws IOException 
      */
     public static void generateAndSaveRSAKeys(String outputPath) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
-        Objects.requireNonNull(outputPath, "Output folder is mandatory !");
+        Objects.requireNonNull(outputPath, MANDATORY_OUTPUT_FOLDER);
         
         KeyPair keyPair = generateRSAKeyPair();
         saveRSAKeyPair(keyPair, outputPath);
@@ -182,9 +184,9 @@ public class ControllerEncryption {
      * @throws ClassNotFoundException 
      */
     public static void encryptRSA(final int mode, final String filePath, final String keyFilePath) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException {
-        Objects.requireNonNull(mode, "Mode is mandatory !");
-        Objects.requireNonNull(filePath, "File to encrypt is mandatory !");
-        Objects.requireNonNull(keyFilePath, "Key is mandatory !");
+        Objects.requireNonNull(mode, MANDATORY_MODE);
+        Objects.requireNonNull(filePath, MANDATORY_FILE_ENCRYPT);
+        Objects.requireNonNull(keyFilePath, MANDATORY_KEY);
         
         File inputFile = new File(filePath);
         File outputFile = preFormating(mode, filePath);  
@@ -194,10 +196,10 @@ public class ControllerEncryption {
             if (publicKey != null) {
                 crypting(mode, publicKey, inputFile, outputFile, RSA);
             } else {
-                throw new CryptingException("Key is empty !");
+                throw new CryptingException(EMPTY_KEY);
             }                   
         } else {
-            throw new CryptingException("Key is mandatory !");  
+            throw new CryptingException(MANDATORY_KEY);  
         }
     }
     
@@ -216,9 +218,9 @@ public class ControllerEncryption {
      * @throws BadPaddingException 
      */
     public static void decryptRSA(final int mode, final String filePath, final String keyFilePath) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
-        Objects.requireNonNull(mode, "Mode is mandatory !");
-        Objects.requireNonNull(filePath, "File to decrypt is mandatory !");
-        Objects.requireNonNull(keyFilePath, "Key is mandatory !");
+        Objects.requireNonNull(mode, MANDATORY_MODE);
+        Objects.requireNonNull(filePath, MANDATORY_FILE_DECRYPT);
+        Objects.requireNonNull(keyFilePath, MANDATORY_KEY);
         
         File inputFile = new File(filePath);
         File outputFile = preFormating(mode, filePath);
@@ -228,10 +230,10 @@ public class ControllerEncryption {
             if (privateKey != null) {
                 crypting(mode, privateKey, inputFile, outputFile, RSA);
             } else {
-                throw new CryptingException("Key is empty !");
+                throw new CryptingException(EMPTY_KEY);
             }                   
         } else {
-            throw new CryptingException("Key is mandatory !");  
+            throw new CryptingException(MANDATORY_KEY);  
         }
     }
     
@@ -273,12 +275,11 @@ public class ControllerEncryption {
     
     /**
      * Save key in a text file
-     * @param key in 128 bits
+     * @param key key in 128 bits
      * @param keyFilePath path for save the key file
-     * @return file with key
      * @throws IOException
      */
-    private static File saveAESKey(final SecretKey key, final String keyFilePath) throws IOException {
+    private static void saveAESKey(final SecretKey key, final String keyFilePath) throws IOException {
         SimpleDateFormat formater = new SimpleDateFormat(DATE_FORMAT);
         final String date = formater.format(new Date());
         File keyFile = new File(keyFilePath + KEY + date + TXT_EXTENSION);
@@ -287,7 +288,6 @@ public class ControllerEncryption {
             final String encodedKey = Base64.getEncoder().encodeToString(encoded);
             fw.write(encodedKey);
         }            
-        return keyFile;
     }
     
     /**
@@ -306,14 +306,11 @@ public class ControllerEncryption {
      * Save private key in a text file
      * @param keyPair
      * @param keysFilesPath
-     * @return file with private key
      * @throws InvalidKeySpecException
      * @throws NoSuchAlgorithmException 
      * @throws IOException
      */
-    private static ArrayList<File> saveRSAKeyPair(final KeyPair keyPair, final String keysFilesPath) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException {
-        ArrayList<File> keysFiles = new ArrayList<>();
-        
+    private static void saveRSAKeyPair(final KeyPair keyPair, final String keysFilesPath) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException {
         SimpleDateFormat formater = new SimpleDateFormat(DATE_FORMAT);
         final String date = formater.format(new Date());
         
@@ -339,10 +336,6 @@ public class ControllerEncryption {
             outputFilePublicKey.writeObject(rsaPublicKey.getPublicExponent());
             outputFilePublicKey.close();
         }
-        
-        keysFiles.add(privateKeyFile);
-        keysFiles.add(publicKeyFile);
-        return keysFiles;
     }
     
     /**

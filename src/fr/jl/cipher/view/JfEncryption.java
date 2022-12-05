@@ -24,9 +24,13 @@ public class JfEncryption extends javax.swing.JFrame {
     
     private static final String AES = "AES";
     private static final String RSA = "RSA";
+    private static final String SRC_PATH = "src\\fr\\jl\\cipher\\resources\\";
+    private static final String ERROR_ICON = "error_icon.png";
+    private static final String SUCCESS_ICON = "success_icon.png";
+    private static final String CIPHER_ICON = "cipher_icon.png";
 
     /**
-     * Creates new form NewJFrame
+     * Creates JFrame
      */
     public JfEncryption() {
         initComponents();
@@ -38,15 +42,15 @@ public class JfEncryption extends javax.swing.JFrame {
         jComboBoxAlgorithm.addItem(RSA);
         jDialogError.setSize(400, 140);
         jDialogError.setLocationRelativeTo(null);
-        jDialogError.setIconImage(new ImageIcon("src\\fr\\jl\\cipher\\resources\\error_icon.png").getImage());
+        jDialogError.setIconImage(new ImageIcon(SRC_PATH + ERROR_ICON).getImage());
         jDialogSuccess.setSize(170, 140);
         jDialogSuccess.setLocationRelativeTo(null);
-        jDialogSuccess.setIconImage(new ImageIcon("src\\fr\\jl\\cipher\\resources\\success_icon.png").getImage());
+        jDialogSuccess.setIconImage(new ImageIcon(SRC_PATH + SUCCESS_ICON).getImage());
         jTextFieldSelectedFile.setEditable(false);
         jTextFieldSelectedKey.setEditable(false);
         jButtonStart.setEnabled(false);
         setLocationRelativeTo(null);
-        setIconImage(new ImageIcon("src\\fr\\jl\\cipher\\resources\\cipher_icon.png").getImage());
+        setIconImage(new ImageIcon(SRC_PATH + CIPHER_ICON).getImage());
         
     }
 
@@ -190,37 +194,6 @@ public class JfEncryption extends javax.swing.JFrame {
         jButtonClearKey.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonClearKeyActionPerformed(evt);
-            }
-        });
-
-        jTextFieldSelectedKey.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                jTextFieldSelectedKeyInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
-        });
-        jTextFieldSelectedKey.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldSelectedKeyActionPerformed(evt);
-            }
-        });
-        jTextFieldSelectedKey.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jTextFieldSelectedKeyPropertyChange(evt);
-            }
-        });
-
-        jTextFieldSelectedFile.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                jTextFieldSelectedFileInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
-        });
-        jTextFieldSelectedFile.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jTextFieldSelectedFilePropertyChange(evt);
             }
         });
 
@@ -409,26 +382,6 @@ public class JfEncryption extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonSearchKeyActionPerformed
 
-    private void jTextFieldSelectedKeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldSelectedKeyActionPerformed
-
-    }//GEN-LAST:event_jTextFieldSelectedKeyActionPerformed
-
-    private void jTextFieldSelectedKeyInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jTextFieldSelectedKeyInputMethodTextChanged
-
-    }//GEN-LAST:event_jTextFieldSelectedKeyInputMethodTextChanged
-
-    private void jTextFieldSelectedKeyPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTextFieldSelectedKeyPropertyChange
-
-    }//GEN-LAST:event_jTextFieldSelectedKeyPropertyChange
-
-    private void jTextFieldSelectedFilePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jTextFieldSelectedFilePropertyChange
-
-    }//GEN-LAST:event_jTextFieldSelectedFilePropertyChange
-
-    private void jTextFieldSelectedFileInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jTextFieldSelectedFileInputMethodTextChanged
-
-    }//GEN-LAST:event_jTextFieldSelectedFileInputMethodTextChanged
-
     private void jButtonGenerateKeysActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerateKeysActionPerformed
         jFolderGeneratedFilesKeysChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         final int value = jFolderGeneratedFilesKeysChooser.showSaveDialog(this);       
@@ -521,8 +474,8 @@ public class JfEncryption extends javax.swing.JFrame {
 
     /**
      * Encrypt or decrypt in AES
-     * @param filePath to encrypt or decrypt
-     * @param keyFilePath to encrypt or decrypt
+     * @param filePath file to encrypt or decrypt
+     * @param keyFilePath key to encrypt or decrypt
      */
     private void cryptingAES(final String filePath, final String keyFilePath) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
         if (jRadioButtonEncrypt.isSelected()) {
@@ -538,8 +491,8 @@ public class JfEncryption extends javax.swing.JFrame {
 
     /**
      * Encrypt or decrypt in RSA
-     * @param filePath to encrypt or decrypt
-     * @param keyFilePath to encrypt or decrypt
+     * @param filePath file to encrypt or decrypt
+     * @param keyFilePath key to encrypt or decrypt
      */
     private void cryptingRSA(final String filePath, final String keyFilePath) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, ClassNotFoundException, CryptingException {
         if (jRadioButtonEncrypt.isSelected()) {
