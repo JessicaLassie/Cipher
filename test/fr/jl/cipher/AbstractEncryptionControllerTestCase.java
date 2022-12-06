@@ -24,22 +24,21 @@ import static org.junit.Assert.assertNotNull;
  */
 abstract class AbstractEncryptionControllerTestCase {
     
-    private final static String PATH = "test\\fr\\jl\\cipher\\resources";
-    private final static String FILE_TO_ENCRYPT = "doc.txt";
-    private final static String KEY_TO_AES_ENCRYPT = "AES_key.txt";
-    private final static String EMPTY_KEY = "empty_key.txt";
-    private final static String WRONG_KEY = "wrong_key.txt";
-    private final static String KEY_TO_RSA_ENCRYPT = "RSA_key.txt";
-    private final static String FILE_PATH = PATH + "\\" + FILE_TO_ENCRYPT;
-    private final static String AES_KEY_PATH = PATH + "\\" + KEY_TO_AES_ENCRYPT;
-    private final static String EMPTY_KEY_PATH = PATH + "\\" + EMPTY_KEY;
-    private final static String WRONG_KEY_PATH = PATH + "\\" + WRONG_KEY;
-    private final static String DOC_ENCRYPTED = "doc_encrypted";
-    private final static String DECRYPTED = "decrypted";
-    private final static String KEY = "key";
-    private final static String PUBLIC_KEY = "public_key_";
-    private final static String PRIVATE_KEY = "private_key_";
-    private final static String RSA_PUBLIC_KEY_PATH = PATH + "\\" + KEY_TO_RSA_ENCRYPT;
+    private static final String PATH = "test\\fr\\jl\\cipher\\resources";
+    private static final String FILE_TO_ENCRYPT = "doc.txt";
+    private static final String KEY_TO_AES_ENCRYPT = "AES_key.txt";
+    private static final String EMPTY_KEY = "empty_key.txt";
+    private static final String WRONG_KEY = "wrong_key.txt";
+    private static final String RSA_PUBLIC_KEY = "RSA_public_key.txt";
+    private static final String RSA_PRIVATE_KEY = "RSA_private_key.txt";
+    private static final String DOC_ENCRYPTED = "doc_encrypted";
+    private static final String DECRYPTED = "decrypted";
+    private static final String FILE_PATH = PATH + "\\" + FILE_TO_ENCRYPT;
+    private static final String AES_KEY_PATH = PATH + "\\" + KEY_TO_AES_ENCRYPT;
+    private static final String EMPTY_KEY_PATH = PATH + "\\" + EMPTY_KEY;
+    private static final String WRONG_KEY_PATH = PATH + "\\" + WRONG_KEY;
+    private static final String RSA_PUBLIC_KEY_PATH = PATH + "\\" + RSA_PUBLIC_KEY;
+    private static final String RSA_PRIVATE_KEY_PATH = PATH + "\\" + RSA_PRIVATE_KEY;
     
     protected void verifySuccessfullEncryptAES() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
         EncryptionController.encryptAES(FILE_PATH, AES_KEY_PATH);
@@ -169,19 +168,7 @@ abstract class AbstractEncryptionControllerTestCase {
         assertEquals(0, files.length);
     }
     
-    protected void verifySuccessfullEncryptRSAWithoutKey() throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException {
-        EncryptionController.encryptRSA(FILE_PATH, "");
-        File dir = new File(PATH);
-        File[] files = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED)|| name.startsWith(PUBLIC_KEY) || name.startsWith(PRIVATE_KEY));
-        assertEquals(3, files.length);
-        for(File file : files) {
-            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                assertNotNull(br.readLine());
-            }
-        }
-    }
-    
-    protected void verifySuccessfullEncryptRSAWithKey() throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException {
+    protected void verifySuccessfullEncryptRSA() throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException {
         EncryptionController.encryptRSA(FILE_PATH, RSA_PUBLIC_KEY_PATH);
         File dir = new File(PATH);
         File[] files = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED));
@@ -195,12 +182,11 @@ abstract class AbstractEncryptionControllerTestCase {
     
     protected void verifySuccessfullDecryptRSA() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
         //Encrypt
-        EncryptionController.encryptRSA(FILE_PATH, "");
+        EncryptionController.encryptRSA(FILE_PATH, RSA_PUBLIC_KEY_PATH);
         //Decrypt
         File dir = new File(PATH);
-        File[] filesKey = dir.listFiles((dir1, name) -> name.startsWith(PRIVATE_KEY));
         File[] filesEncrypted = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED));
-        EncryptionController.decryptRSA(PATH + "\\" + filesEncrypted[0].getName(), PATH + "\\" + filesKey[0].getName());
+        EncryptionController.decryptRSA(PATH + "\\" + filesEncrypted[0].getName(), RSA_PRIVATE_KEY_PATH);
         File[] filesDecrypted = dir.listFiles((dir1, name) -> name.contains(DECRYPTED));
         assertEquals(1, filesDecrypted.length);
         for(File file : filesDecrypted) {

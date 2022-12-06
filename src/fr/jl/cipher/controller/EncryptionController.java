@@ -42,7 +42,6 @@ public class EncryptionController {
     private static final String RSA = "RSA";
     private static final String DATE_FORMAT = "yyyyMMddHHmmss";
 
-    private static final String MANDATORY_MODE = "Mode is mandatory !";
     private static final String MANDATORY_FILE_ENCRYPT = "File to encrypt is mandatory !";
     private static final String MANDATORY_FILE_DECRYPT = "File to decrypt is mandatory !";
     private static final String MANDATORY_KEY = "Key is mandatory !";

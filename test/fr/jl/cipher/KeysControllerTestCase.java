@@ -22,10 +22,10 @@ import org.junit.Test;
  */
 public class KeysControllerTestCase {
     
-    private final static String PATH = "test\\fr\\jl\\cipher\\resources";    
-    private final static String KEY = "key";
-    private final static String PRIVATE_KEY = "private_key";
-    private final static String PUBLIC_KEY = "public_key";
+    private static final String PATH = "test\\fr\\jl\\cipher\\resources";    
+    private static final String KEY = "key";
+    private static final String PRIVATE_KEY = "private_key";
+    private static final String PUBLIC_KEY = "public_key";
     
     @After
     public void tearDown() {

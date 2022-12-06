@@ -15,7 +15,6 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -23,17 +22,14 @@ import org.junit.Test;
  */
 public class EncryptionControllerTestCase extends AbstractEncryptionControllerTestCase {
        
-    private final static String PATH = "test\\fr\\jl\\cipher\\resources";    
-    private final static String DOC_ENCRYPTED = "doc_encrypted";
-    private final static String DECRYPTED = "decrypted";
-    private final static String KEY = "key";
-    private final static String PUBLIC_KEY = "public_key_";
-    private final static String PRIVATE_KEY = "private_key_";
+    private static final String PATH = "test\\fr\\jl\\cipher\\resources";    
+    private static final String DOC_ENCRYPTED = "doc_encrypted";
+    private static final String DECRYPTED = "decrypted";
     
     @After
     public void tearDown() {
         File dir = new File(PATH);
-        File[] files = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED)|| name.startsWith(KEY) || name.contains(DECRYPTED) || name.startsWith(PUBLIC_KEY) || name.startsWith(PRIVATE_KEY));
+        File[] files = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED)|| name.contains(DECRYPTED));
         for(File file : files) {
             file.delete();
         }
@@ -122,19 +118,11 @@ public class EncryptionControllerTestCase extends AbstractEncryptionControllerTe
     }
     
     @Test
-    @Ignore
-    public void testSuccessfullEncryptRSAWithoutKey() throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException{
-        verifySuccessfullEncryptRSAWithoutKey();
-    }
-    
-    @Test
-    @Ignore
-    public void testSuccessfullEncryptRSAWithKey() throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException{
-        verifySuccessfullEncryptRSAWithKey();
+    public void testSuccessfullEncryptRSA() throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException{
+        verifySuccessfullEncryptRSA();
     }
         
     @Test
-    @Ignore
     public void testSuccessfullDecryptRSA() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException{
         verifySuccessfullDecryptRSA();
     }
