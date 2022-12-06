@@ -12,7 +12,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.swing.ImageIcon;
@@ -480,12 +479,10 @@ public class JfEncryption extends javax.swing.JFrame {
      */
     private void cryptingAES(final String filePath, final String keyFilePath) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
         if (jRadioButtonEncrypt.isSelected()) {
-            int mode = Cipher.ENCRYPT_MODE;
-            EncryptionController.encryptAES(mode, filePath, keyFilePath);
+            EncryptionController.encryptAES(filePath, keyFilePath);
         }
         if (jRadioButtonDecrypt.isSelected()) {
-            int mode = Cipher.DECRYPT_MODE;
-            EncryptionController.decryptAES(mode, filePath, keyFilePath);
+            EncryptionController.decryptAES(filePath, keyFilePath);
             
         }
     }
@@ -497,12 +494,10 @@ public class JfEncryption extends javax.swing.JFrame {
      */
     private void cryptingRSA(final String filePath, final String keyFilePath) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, ClassNotFoundException, CryptingException {
         if (jRadioButtonEncrypt.isSelected()) {
-            int mode = Cipher.ENCRYPT_MODE;
-            EncryptionController.encryptRSA(mode, filePath, keyFilePath);                  
+            EncryptionController.encryptRSA(filePath, keyFilePath);                  
         }
         if (jRadioButtonDecrypt.isSelected()) {
-            int mode = Cipher.DECRYPT_MODE;
-            EncryptionController.decryptRSA(mode, filePath, keyFilePath);
+            EncryptionController.decryptRSA(filePath, keyFilePath);
         }
     }
 }

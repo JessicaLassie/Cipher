@@ -50,7 +50,6 @@ public class EncryptionController {
     
     /**
      * Encrypt a file in AES
-     * @param mode encrypt or decrypt mode
      * @param filePath path of the file to encrypt
      * @param keyFilePath path of the key for encrypt
      * @throws NoSuchAlgorithmException
@@ -61,11 +60,11 @@ public class EncryptionController {
      * @throws BadPaddingException 
      * @throws CryptingException 
      */
-    public static void encryptAES(final int mode, final String filePath, final String keyFilePath) throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
-        Objects.requireNonNull(mode, MANDATORY_MODE);
+    public static void encryptAES(final String filePath, final String keyFilePath) throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
         Objects.requireNonNull(filePath, MANDATORY_FILE_ENCRYPT);
         Objects.requireNonNull(keyFilePath, MANDATORY_KEY);
         
+        int mode = Cipher.ENCRYPT_MODE;       
         File inputFile = new File(filePath);
         File outputFile = preFormating(mode, filePath);
         
@@ -92,7 +91,6 @@ public class EncryptionController {
     
     /**
      * Decrypt a file in AES
-     * @param mode encrypt or decrypt mode
      * @param filePath path of the file to decrypt
      * @param keyFilePath path of the key for decrypt
      * @throws IOException
@@ -103,11 +101,11 @@ public class EncryptionController {
      * @throws BadPaddingException 
      * @throws CryptingException 
      */
-    public static void decryptAES(final int mode, final String filePath, final String keyFilePath) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
-        Objects.requireNonNull(mode, MANDATORY_MODE);
+    public static void decryptAES(final String filePath, final String keyFilePath) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
         Objects.requireNonNull(filePath, MANDATORY_FILE_DECRYPT);
         Objects.requireNonNull(keyFilePath, MANDATORY_KEY);
         
+        int mode = Cipher.DECRYPT_MODE;
         File inputFile = new File(filePath);
         File outputFile = preFormating(mode, filePath);
         if(!keyFilePath.equals("")) {
@@ -133,7 +131,6 @@ public class EncryptionController {
     
     /**
      * Encrypt a file in RSA
-     * @param mode encrypt or decrypt mode
      * @param filePath path of the file to encrypt
      * @param keyFilePath path of the key for encrypt
      * @throws InvalidKeySpecException
@@ -146,11 +143,11 @@ public class EncryptionController {
      * @throws CryptingException 
      * @throws ClassNotFoundException 
      */
-    public static void encryptRSA(final int mode, final String filePath, final String keyFilePath) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException {
-        Objects.requireNonNull(mode, MANDATORY_MODE);
+    public static void encryptRSA(final String filePath, final String keyFilePath) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException {
         Objects.requireNonNull(filePath, MANDATORY_FILE_ENCRYPT);
         Objects.requireNonNull(keyFilePath, MANDATORY_KEY);
-        
+               
+        int mode = Cipher.ENCRYPT_MODE;
         File inputFile = new File(filePath);
         File outputFile = preFormating(mode, filePath);  
         
@@ -168,7 +165,6 @@ public class EncryptionController {
     
     /**
      * Decrypt a file in RSA
-     * @param mode encrypt or decrypt mode
      * @param filePath path of the file to decrypt
      * @param keyFilePath path of the key for decrypt
      * @throws IOException
@@ -179,12 +175,13 @@ public class EncryptionController {
      * @throws NoSuchPaddingException
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException 
+     * @throws CryptingException 
      */
-    public static void decryptRSA(final int mode, final String filePath, final String keyFilePath) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
-        Objects.requireNonNull(mode, MANDATORY_MODE);
+    public static void decryptRSA(final String filePath, final String keyFilePath) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
         Objects.requireNonNull(filePath, MANDATORY_FILE_DECRYPT);
         Objects.requireNonNull(keyFilePath, MANDATORY_KEY);
         
+        int mode = Cipher.DECRYPT_MODE;
         File inputFile = new File(filePath);
         File outputFile = preFormating(mode, filePath);
         
