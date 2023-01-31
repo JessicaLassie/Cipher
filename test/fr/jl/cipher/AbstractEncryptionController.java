@@ -60,6 +60,13 @@ abstract class AbstractEncryptionController {
         assertEquals(0, files.length);
     }
     
+    protected void verifyErrorEncryptAESWithEmptyKeyPath() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
+        EncryptionController.encryptAES(FILE_PATH, "");
+        File dir = new File(PATH);
+        File[] files = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED));
+        assertEquals(0, files.length);
+    }
+    
     protected void verifyErrorEncryptAESWithEmptyKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
         EncryptionController.encryptAES(FILE_PATH, EMPTY_KEY_PATH);
         File dir = new File(PATH);
@@ -118,6 +125,17 @@ abstract class AbstractEncryptionController {
         File dir = new File(PATH);
         File[] filesEncrypted = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED));
         EncryptionController.decryptAES(PATH + "\\" + filesEncrypted[0].getName(), null);
+        File[] files = dir.listFiles((dir1, name) -> name.contains(DECRYPTED));
+        assertEquals(0, files.length);
+    }
+    
+    protected void verifyErrorDecryptAESWithEmptyKeyPath() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
+        //Encrypt
+        EncryptionController.encryptAES(FILE_PATH, AES_KEY_PATH);
+        //Decrypt
+        File dir = new File(PATH);
+        File[] filesEncrypted = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED));
+        EncryptionController.decryptAES(PATH + "\\" + filesEncrypted[0].getName(), "");
         File[] files = dir.listFiles((dir1, name) -> name.contains(DECRYPTED));
         assertEquals(0, files.length);
     }

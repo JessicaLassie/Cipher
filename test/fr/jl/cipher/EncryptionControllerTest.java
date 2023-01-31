@@ -49,6 +49,12 @@ public class EncryptionControllerTest extends AbstractEncryptionController {
     
     @Test
     (expected=CryptingException.class)
+    public void testErrorEncryptAESWithEmptyKeyPath() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException{        
+        verifyErrorEncryptAESWithEmptyKeyPath();
+    }
+    
+    @Test
+    (expected=CryptingException.class)
     public void testErrorEncryptAESWithEmptyKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException{        
         verifyErrorEncryptAESWithEmptyKey();
     }
@@ -86,6 +92,12 @@ public class EncryptionControllerTest extends AbstractEncryptionController {
     (expected=NullPointerException.class)
     public void testErrorDecryptAESWithNullKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException, InvalidKeySpecException, InvalidAlgorithmParameterException{        
         verifyErrorDecryptAESWithNullKey();
+    }
+    
+    @Test
+    (expected=CryptingException.class)
+    public void testErrorDecryptAESWithEmptyKeyPath() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException{        
+        verifyErrorDecryptAESWithEmptyKeyPath();
     }
     
     @Test
