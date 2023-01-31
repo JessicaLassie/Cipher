@@ -27,7 +27,7 @@ abstract class AbstractEncryptionController {
     
     private static final String PATH = "test\\fr\\jl\\cipher\\resources";
     private static final String FILE_TO_ENCRYPT = "doc.txt";
-    private static final String KEY_TO_AES_ENCRYPT = "empty_key.txt";
+    private static final String KEY_TO_AES_ENCRYPT = "AES_key.txt";
     private static final String EMPTY_KEY = "empty_key.txt";
     private static final String WRONG_KEY = "wrong_key.txt";
     private static final String RSA_PUBLIC_KEY = "RSA_public_key.txt";

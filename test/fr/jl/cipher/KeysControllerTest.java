@@ -41,7 +41,7 @@ public class KeysControllerTest {
         KeysController.generateAndSaveAESKey(PATH);
         File dir = new File(PATH);
         File[] files = dir.listFiles((dir1, name) -> name.startsWith(KEY));
-        assertEquals(1, files.length);
+        assertEquals(2, files.length);
         for(File file : files) {
             try (BufferedReader br = new BufferedReader(new FileReader(file))) {
                 assertNotNull(br.readLine());
