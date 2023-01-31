@@ -2,6 +2,7 @@
 
 ### Added
 * Button for generate ans save keys
+* Build tests
 
 ### Changed
 * Modify AES 128 bits in AES 256 bits
