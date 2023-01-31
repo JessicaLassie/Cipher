@@ -4,12 +4,13 @@
  */
 package fr.jl.cipher;
 
-import fr.jl.cipher.controller.EncryptionController;
 import fr.jl.cipher.controller.CryptingException;
+import fr.jl.cipher.controller.EncryptionController;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -40,7 +41,7 @@ abstract class AbstractEncryptionControllerTestCase {
     private static final String RSA_PUBLIC_KEY_PATH = PATH + "\\" + RSA_PUBLIC_KEY;
     private static final String RSA_PRIVATE_KEY_PATH = PATH + "\\" + RSA_PRIVATE_KEY;
     
-    protected void verifySuccessfullEncryptAES() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    protected void verifySuccessfullEncryptAES() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
         EncryptionController.encryptAES(FILE_PATH, AES_KEY_PATH);
         File dir = new File(PATH);
         File[] files = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED));
@@ -52,49 +53,49 @@ abstract class AbstractEncryptionControllerTestCase {
         }
     }
     
-    protected void verifyErrorEncryptAESWithNullKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    protected void verifyErrorEncryptAESWithNullKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
         EncryptionController.encryptAES(FILE_PATH, null);
         File dir = new File(PATH);
         File[] files = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED));
         assertEquals(0, files.length);
     }
     
-    protected void verifyErrorEncryptAESWithEmptyKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    protected void verifyErrorEncryptAESWithEmptyKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
         EncryptionController.encryptAES(FILE_PATH, EMPTY_KEY_PATH);
         File dir = new File(PATH);
         File[] files = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED));
         assertEquals(0, files.length);
     }
     
-    protected void verifyErrorEncryptAESWithWrongKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    protected void verifyErrorEncryptAESWithWrongKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
         EncryptionController.encryptAES(FILE_PATH, WRONG_KEY_PATH);
         File dir = new File(PATH);
         File[] files = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED));
         assertEquals(0, files.length);
     }
     
-    protected void verifyErrorEncryptAESWithNotExistingKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    protected void verifyErrorEncryptAESWithNotExistingKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
         EncryptionController.encryptAES(FILE_PATH, "notExistingKey.txt");
         File dir = new File(PATH);
         File[] files = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED));
         assertEquals(0, files.length);
     }
     
-    protected void verifyErrorEncryptAESWithNullFile() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    protected void verifyErrorEncryptAESWithNullFile() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
         EncryptionController.encryptAES(null, AES_KEY_PATH);
         File dir = new File(PATH);
         File[] files = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED));
         assertEquals(0, files.length);
     }
     
-    protected void verifyErrorEncryptAESWithNotExistingFile() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    protected void verifyErrorEncryptAESWithNotExistingFile() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
         EncryptionController.encryptAES("notExistingFile.txt", AES_KEY_PATH);
         File dir = new File(PATH);
         File[] files = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED));
         assertEquals(0, files.length);
     }
     
-    protected void verifySuccessfullDecryptAES() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    protected void verifySuccessfullDecryptAES() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
         //Encrypt
         EncryptionController.encryptAES(FILE_PATH, AES_KEY_PATH);
         //Decrypt
@@ -110,7 +111,7 @@ abstract class AbstractEncryptionControllerTestCase {
         }
     }
     
-    protected void verifyErrorDecryptAESWithNullKey() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    protected void verifyErrorDecryptAESWithNullKey() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
         //Encrypt
         EncryptionController.encryptAES(FILE_PATH, AES_KEY_PATH);
         //Decrypt
@@ -121,7 +122,7 @@ abstract class AbstractEncryptionControllerTestCase {
         assertEquals(0, files.length);
     }
     
-    protected void verifyErrorDecryptAESWithEmptyKey() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    protected void verifyErrorDecryptAESWithEmptyKey() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
         //Encrypt
         EncryptionController.encryptAES(FILE_PATH, AES_KEY_PATH);
         //Decrypt
@@ -132,7 +133,7 @@ abstract class AbstractEncryptionControllerTestCase {
         assertEquals(0, files.length);
     }
     
-    protected void verifyErrorDecryptAESWithWrongKey() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    protected void verifyErrorDecryptAESWithWrongKey() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
         //Encrypt
         EncryptionController.encryptAES(FILE_PATH, AES_KEY_PATH);
         //Decrypt
@@ -143,7 +144,7 @@ abstract class AbstractEncryptionControllerTestCase {
         assertEquals(0, files.length);
     }
     
-    protected void verifyErrorDecryptAESWithNotExistingKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    protected void verifyErrorDecryptAESWithNotExistingKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
         //Encrypt
         EncryptionController.encryptAES(FILE_PATH, AES_KEY_PATH);
         //Decrypt
@@ -154,21 +155,21 @@ abstract class AbstractEncryptionControllerTestCase {
         assertEquals(0, files.length);
     }
     
-    protected void verifyErrorDecryptAESWithNullFile() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    protected void verifyErrorDecryptAESWithNullFile() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
         EncryptionController.decryptAES(null, AES_KEY_PATH);
         File dir = new File(PATH);
         File[] files = dir.listFiles((dir1, name) -> name.contains(DECRYPTED));
         assertEquals(0, files.length);
     }
     
-    protected void verifyErrorDecryptAESWithNotExistingFile() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    protected void verifyErrorDecryptAESWithNotExistingFile() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
         EncryptionController.decryptAES("notExistingFile.txt", AES_KEY_PATH);
         File dir = new File(PATH);
         File[] files = dir.listFiles((dir1, name) -> name.contains(DECRYPTED));
         assertEquals(0, files.length);
     }
     
-    protected void verifySuccessfullEncryptRSA() throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException {
+    protected void verifySuccessfullEncryptRSA() throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException, InvalidAlgorithmParameterException {
         EncryptionController.encryptRSA(FILE_PATH, RSA_PUBLIC_KEY_PATH);
         File dir = new File(PATH);
         File[] files = dir.listFiles((dir1, name) -> name.startsWith(DOC_ENCRYPTED));
@@ -180,7 +181,7 @@ abstract class AbstractEncryptionControllerTestCase {
         }
     }
     
-    protected void verifySuccessfullDecryptRSA() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    protected void verifySuccessfullDecryptRSA() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
         //Encrypt
         EncryptionController.encryptRSA(FILE_PATH, RSA_PUBLIC_KEY_PATH);
         //Decrypt

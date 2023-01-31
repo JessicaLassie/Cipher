@@ -67,13 +67,13 @@ public class KeysController {
     }
     
     /**
-     * Generate key in 128 bits for AES encryption
-     * @return key in 128 bits
+     * Generate key in 256 bits for AES encryption
+     * @return key in 256 bits
      * @throws NoSuchAlgorithmException 
      */
     private static SecretKey generateAESKey() throws NoSuchAlgorithmException {
         KeyGenerator keyGen = KeyGenerator.getInstance(AES);
-        keyGen.init(128);
+        keyGen.init(256);
         SecretKey secretKey = keyGen.generateKey();
         return secretKey;
     }
