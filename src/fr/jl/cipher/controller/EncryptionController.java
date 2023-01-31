@@ -5,23 +5,17 @@
 package fr.jl.cipher.controller;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Writer;
 import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -29,13 +23,12 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Objects;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -43,22 +36,19 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  *
  */
-public class ControllerEncryption {
+public class EncryptionController {
     
     private static final String AES = "AES";
     private static final String RSA = "RSA";
     private static final String DATE_FORMAT = "yyyyMMddHHmmss";
-    private static final String KEY = "\\key_";
-    private static final String PUBLIC_KEY = "\\public_key_";
-    private static final String PRIVATE_KEY = "\\private_key_";
-    private static final String TXT_EXTENSION = ".txt";
-    
-    private ControllerEncryption() { 
-    };
+
+    private static final String MANDATORY_FILE_ENCRYPT = "File to encrypt is mandatory !";
+    private static final String MANDATORY_FILE_DECRYPT = "File to decrypt is mandatory !";
+    private static final String MANDATORY_KEY = "Key is mandatory !";
+    private static final String EMPTY_KEY = "Key is empty !";
     
     /**
      * Encrypt a file in AES
-     * @param mode encrypt or decrypt mode
      * @param filePath path of the file to encrypt
      * @param keyFilePath path of the key for encrypt
      * @throws NoSuchAlgorithmException
@@ -69,12 +59,15 @@ public class ControllerEncryption {
      * @throws BadPaddingException 
      * @throws CryptingException 
      */
-    public static void encryptAES(final int mode, final String filePath, final String keyFilePath) throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    public static void encryptAES(final String filePath, final String keyFilePath) throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+        Objects.requireNonNull(filePath, MANDATORY_FILE_ENCRYPT);
+        Objects.requireNonNull(keyFilePath, MANDATORY_KEY);
+        
+        int mode = Cipher.ENCRYPT_MODE;       
         File inputFile = new File(filePath);
         File outputFile = preFormating(mode, filePath);
         
-        if(keyFilePath != null && !keyFilePath.equals("")){
-            // If we have a key for encrypt
+        if(!keyFilePath.equals("")){
             try (BufferedReader reader = new BufferedReader(new FileReader(keyFilePath))) {
                 String line;
                 String contentFile = "";
@@ -86,24 +79,17 @@ public class ControllerEncryption {
                     SecretKey key = new SecretKeySpec(encodedKey, 0, encodedKey.length, AES);
                     crypting(mode, key, inputFile, outputFile, AES);
                 } else {
-                    throw new CryptingException("Key is empty !");
+                    throw new CryptingException(EMPTY_KEY);
                 }
             }
         } else {
-            // If we DON'T have a key for encrypt
-            // Generate a key
-            SecretKey key = generateAESKey();
-            File keyFile = saveAESKey(key, outputFile.getParent());
-            if (key != null && keyFile.exists()){
-                crypting(mode, key, inputFile, outputFile, AES);
-            }
+            throw new CryptingException(MANDATORY_KEY);             
         }
                    
     }
     
     /**
      * Decrypt a file in AES
-     * @param mode encrypt or decrypt mode
      * @param filePath path of the file to decrypt
      * @param keyFilePath path of the key for decrypt
      * @throws IOException
@@ -114,10 +100,14 @@ public class ControllerEncryption {
      * @throws BadPaddingException 
      * @throws CryptingException 
      */
-    public static void decryptAES(final int mode, final String filePath, final String keyFilePath) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    public static void decryptAES(final String filePath, final String keyFilePath) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+        Objects.requireNonNull(filePath, MANDATORY_FILE_DECRYPT);
+        Objects.requireNonNull(keyFilePath, MANDATORY_KEY);
+        
+        int mode = Cipher.DECRYPT_MODE;
         File inputFile = new File(filePath);
         File outputFile = preFormating(mode, filePath);
-        if(keyFilePath != null && !keyFilePath.equals("")) {
+        if(!keyFilePath.equals("")) {
             try (BufferedReader reader = new BufferedReader(new FileReader(keyFilePath))) {
                 String line;
                 String contentFile = "";
@@ -129,18 +119,17 @@ public class ControllerEncryption {
                     SecretKey key = new SecretKeySpec(decodedKey, 0, decodedKey.length, AES);
                     crypting(mode, key, inputFile, outputFile, AES);
                 } else {
-                    throw new CryptingException("Key is empty !");
+                    throw new CryptingException(EMPTY_KEY);
                 }
             }
         } else {
-            throw new CryptingException("Key is mandatory !");
+            throw new CryptingException(MANDATORY_KEY);
         }
         
     }
     
     /**
      * Encrypt a file in RSA
-     * @param mode encrypt or decrypt mode
      * @param filePath path of the file to encrypt
      * @param keyFilePath path of the key for encrypt
      * @throws InvalidKeySpecException
@@ -153,33 +142,28 @@ public class ControllerEncryption {
      * @throws CryptingException 
      * @throws ClassNotFoundException 
      */
-    public static void encryptRSA(final int mode, final String filePath, final String keyFilePath) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException {
+    public static void encryptRSA(final String filePath, final String keyFilePath) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException {
+        Objects.requireNonNull(filePath, MANDATORY_FILE_ENCRYPT);
+        Objects.requireNonNull(keyFilePath, MANDATORY_KEY);
+               
+        int mode = Cipher.ENCRYPT_MODE;
         File inputFile = new File(filePath);
         File outputFile = preFormating(mode, filePath);  
         
         if(!keyFilePath.equals("")){
-            // If we have a key for encrypt
             PublicKey publicKey = getRSAPublicKey(keyFilePath);
             if (publicKey != null) {
                 crypting(mode, publicKey, inputFile, outputFile, RSA);
             } else {
-                //remonter une erreur clé vide
-                throw new CryptingException("Key is empty !");
+                throw new CryptingException(EMPTY_KEY);
             }                   
         } else {
-            // If we DON'T have a key for encrypt
-            // Generate the keys
-            KeyPair keyPair = generateRSAKeyPair();
-            ArrayList<File> keysFiles = saveRSAKeyPair(keyPair, outputFile.getParent());
-            if (keysFiles.size() == 2){
-                crypting(mode, keyPair.getPublic(), inputFile, outputFile, RSA);
-            }  
+            throw new CryptingException(MANDATORY_KEY);  
         }
     }
     
     /**
      * Decrypt a file in RSA
-     * @param mode encrypt or decrypt mode
      * @param filePath path of the file to decrypt
      * @param keyFilePath path of the key for decrypt
      * @throws IOException
@@ -190,13 +174,25 @@ public class ControllerEncryption {
      * @throws NoSuchPaddingException
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException 
+     * @throws CryptingException 
      */
-    public static void decryptRSA(final int mode, final String filePath, final String keyFilePath) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+    public static void decryptRSA(final String filePath, final String keyFilePath) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+        Objects.requireNonNull(filePath, MANDATORY_FILE_DECRYPT);
+        Objects.requireNonNull(keyFilePath, MANDATORY_KEY);
+        
+        int mode = Cipher.DECRYPT_MODE;
         File inputFile = new File(filePath);
         File outputFile = preFormating(mode, filePath);
-        PrivateKey privateKey = getRSAPrivateKey(keyFilePath);
-        if (privateKey != null) {
-            crypting(mode, privateKey, inputFile, outputFile, RSA);
+        
+        if(!keyFilePath.equals("")){
+            PrivateKey privateKey = getRSAPrivateKey(keyFilePath);
+            if (privateKey != null) {
+                crypting(mode, privateKey, inputFile, outputFile, RSA);
+            } else {
+                throw new CryptingException(EMPTY_KEY);
+            }                   
+        } else {
+            throw new CryptingException(MANDATORY_KEY);  
         }
     }
     
@@ -222,92 +218,6 @@ public class ControllerEncryption {
                 break;
         }
         return new File(filePath.substring(0, pos) + modeType + date + filePath.substring(pos, filePath.length()));
-    }
-    
-    /**
-     * Generate key in 128 bits for AES encryption
-     * @return key in 128 bits
-     * @throws NoSuchAlgorithmException 
-     */
-    private static SecretKey generateAESKey() throws NoSuchAlgorithmException {
-        KeyGenerator keyGen = KeyGenerator.getInstance(AES);
-        keyGen.init(128);
-        SecretKey secretKey = keyGen.generateKey();
-        return secretKey;
-    }
-    
-    /**
-     * Save key in a text file
-     * @param key in 128 bits
-     * @param keyFilePath path for save the key file
-     * @return file with key
-     * @throws IOException
-     */
-    private static File saveAESKey(final SecretKey key, final String keyFilePath) throws IOException {
-        SimpleDateFormat formater = new SimpleDateFormat(DATE_FORMAT);
-        final String date = formater.format(new Date());
-        File keyFile = new File(keyFilePath + KEY + date + TXT_EXTENSION);
-        try (Writer fw = new FileWriter(keyFile.getAbsoluteFile())) {
-            byte encoded[] = key.getEncoded();
-            final String encodedKey = Base64.getEncoder().encodeToString(encoded);
-            fw.write(encodedKey);
-        }            
-        return keyFile;
-    }
-    
-    /**
-     * Generate key pair for RSA crypting
-     * @return keys pair (private key and public key)
-     * @throws NoSuchAlgorithmException
-     */
-    private static KeyPair generateRSAKeyPair() throws NoSuchAlgorithmException {
-        KeyPairGenerator keyGenerator = KeyPairGenerator.getInstance(RSA);
-        keyGenerator.initialize(2048);
-        KeyPair keyPair = keyGenerator.generateKeyPair();           
-        return keyPair;
-    }
-    
-    /**
-     * Save private key in a text file
-     * @param keyPair
-     * @param keysFilesPath
-     * @return file with private key
-     * @throws InvalidKeySpecException
-     * @throws NoSuchAlgorithmException 
-     * @throws IOException
-     */
-    private static ArrayList<File> saveRSAKeyPair(final KeyPair keyPair, final String keysFilesPath) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException {
-        ArrayList<File> keysFiles = new ArrayList<>();
-        
-        SimpleDateFormat formater = new SimpleDateFormat(DATE_FORMAT);
-        final String date = formater.format(new Date());
-        
-        File privateKeyFile = new File(keysFilesPath + PRIVATE_KEY + date + TXT_EXTENSION);
-        File publicKeyFile = new File(keysFilesPath + PUBLIC_KEY + date + TXT_EXTENSION);
-        
-        KeyFactory factory = KeyFactory.getInstance(RSA);
-        RSAPrivateKeySpec rsaPrivateKey = factory.getKeySpec(keyPair.getPrivate(), RSAPrivateKeySpec.class);
-        RSAPublicKeySpec rsaPublicKey = factory.getKeySpec(keyPair.getPublic(), RSAPublicKeySpec.class);
-        
-        if (rsaPrivateKey != null && rsaPublicKey != null) {
-            FileOutputStream fosPrivateKey = new FileOutputStream(privateKeyFile);
-            BufferedOutputStream bosPrivateKey = new BufferedOutputStream(fosPrivateKey);
-            ObjectOutputStream outputFilePrivateKey = new ObjectOutputStream(bosPrivateKey);
-            outputFilePrivateKey.writeObject(rsaPrivateKey.getModulus());
-            outputFilePrivateKey.writeObject(rsaPrivateKey.getPrivateExponent());
-            outputFilePrivateKey.close();
-            
-            FileOutputStream fosPublicKey = new FileOutputStream(publicKeyFile);
-            BufferedOutputStream bosPublicKey = new BufferedOutputStream(fosPublicKey);
-            ObjectOutputStream outputFilePublicKey = new ObjectOutputStream(bosPublicKey);
-            outputFilePublicKey.writeObject(rsaPublicKey.getModulus());
-            outputFilePublicKey.writeObject(rsaPublicKey.getPublicExponent());
-            outputFilePublicKey.close();
-        }
-        
-        keysFiles.add(privateKeyFile);
-        keysFiles.add(publicKeyFile);
-        return keysFiles;
     }
     
     /**

@@ -71,5 +71,4 @@
 
     -->
 
-	<target name="-do-compile-test" depends=""/>
 </project>
