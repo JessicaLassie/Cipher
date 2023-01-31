@@ -70,19 +70,5 @@
     nbproject/build-impl.xml file. 
 
     -->
-    
-    <target name="junit" depends="jar">
-        <junit printsummary="yes">
-            <classpath>
-                <path refid="classpath"/>
-                <path refid="application"/>
-            </classpath>
-            
-            <batchtest fork="yes">
-                <fileset dir="${src.dir}" includes="*Test.java"/>
-            </batchtest>
-        </junit>
-    </target>
-
 
 </project>
