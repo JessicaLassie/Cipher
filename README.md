@@ -2,7 +2,7 @@
 
 ## Goals
 
-Cipher is a desktop application developed with Netbeans in Java/Swing allowing to encrypt/decrypt a file in AES (128bits) or RSA.
+Cipher is a desktop application developed with Netbeans in Java/Swing allowing to encrypt/decrypt a file in AES (256bits) or RSA.
 
 ## Changelog
 
@@ -17,4 +17,4 @@ Cf CHANGELOG.md
 ## Executables Environment
 
 ### Executables and environment variables
-- At least Java 8
+- At least Java 8 ans JCE Policy 8

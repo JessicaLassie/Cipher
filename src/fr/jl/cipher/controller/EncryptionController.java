@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.math.BigInteger;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyFactory;
@@ -31,6 +32,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
@@ -39,6 +41,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class EncryptionController {
     
     private static final String AES = "AES";
+    private static final String AES_CBC_PKCS5PADDING = "AES/CBC/PKCS5Padding";
     private static final String RSA = "RSA";
     private static final String DATE_FORMAT = "yyyyMMddHHmmss";
 
@@ -59,7 +62,7 @@ public class EncryptionController {
      * @throws BadPaddingException 
      * @throws CryptingException 
      */
-    public static void encryptAES(final String filePath, final String keyFilePath) throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    public static void encryptAES(final String filePath, final String keyFilePath) throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
         Objects.requireNonNull(filePath, MANDATORY_FILE_ENCRYPT);
         Objects.requireNonNull(keyFilePath, MANDATORY_KEY);
         
@@ -77,7 +80,8 @@ public class EncryptionController {
                 byte[] encodedKey = Base64.getDecoder().decode(contentFile);                
                 if(encodedKey.length > 0) {
                     SecretKey key = new SecretKeySpec(encodedKey, 0, encodedKey.length, AES);
-                    crypting(mode, key, inputFile, outputFile, AES);
+                    IvParameterSpec parameterSpec = new IvParameterSpec(new byte[16]);
+                    crypting(mode, key, inputFile, outputFile, AES_CBC_PKCS5PADDING, parameterSpec);
                 } else {
                     throw new CryptingException(EMPTY_KEY);
                 }
@@ -100,7 +104,7 @@ public class EncryptionController {
      * @throws BadPaddingException 
      * @throws CryptingException 
      */
-    public static void decryptAES(final String filePath, final String keyFilePath) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    public static void decryptAES(final String filePath, final String keyFilePath) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
         Objects.requireNonNull(filePath, MANDATORY_FILE_DECRYPT);
         Objects.requireNonNull(keyFilePath, MANDATORY_KEY);
         
@@ -117,7 +121,8 @@ public class EncryptionController {
                 byte[] decodedKey = Base64.getDecoder().decode(contentFile);
                 if(decodedKey.length > 0) {
                     SecretKey key = new SecretKeySpec(decodedKey, 0, decodedKey.length, AES);
-                    crypting(mode, key, inputFile, outputFile, AES);
+                    IvParameterSpec parameterSpec = new IvParameterSpec(new byte[16]);
+                    crypting(mode, key, inputFile, outputFile, AES_CBC_PKCS5PADDING, parameterSpec);
                 } else {
                     throw new CryptingException(EMPTY_KEY);
                 }
@@ -142,7 +147,7 @@ public class EncryptionController {
      * @throws CryptingException 
      * @throws ClassNotFoundException 
      */
-    public static void encryptRSA(final String filePath, final String keyFilePath) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException {
+    public static void encryptRSA(final String filePath, final String keyFilePath) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException, InvalidAlgorithmParameterException {
         Objects.requireNonNull(filePath, MANDATORY_FILE_ENCRYPT);
         Objects.requireNonNull(keyFilePath, MANDATORY_KEY);
                
@@ -176,7 +181,7 @@ public class EncryptionController {
      * @throws BadPaddingException 
      * @throws CryptingException 
      */
-    public static void decryptRSA(final String filePath, final String keyFilePath) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    public static void decryptRSA(final String filePath, final String keyFilePath) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
         Objects.requireNonNull(filePath, MANDATORY_FILE_DECRYPT);
         Objects.requireNonNull(keyFilePath, MANDATORY_KEY);
         
@@ -275,6 +280,7 @@ public class EncryptionController {
      * @param inputFile file to encrypt or decrypt
      * @param outputFile encrypted file or decrypted file
      * @param algorithm algorithm of crypting
+     * @param parameterSpec IV parameter
      * @throws IOException
      * @throws InvalidKeyException
      * @throws NoSuchAlgorithmException
@@ -282,11 +288,15 @@ public class EncryptionController {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException 
      */    
-    private static void crypting(final int mode, final Key key, File inputFile, File outputFile, final String algorithm) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+    private static void crypting(final int mode, final Key key, File inputFile, File outputFile, final String algorithm, final IvParameterSpec... parameterSpec) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
         FileInputStream inputStream = new FileInputStream(inputFile); 
         FileOutputStream outputStream = new FileOutputStream(outputFile);
         Cipher cipher = Cipher.getInstance(algorithm);
-        cipher.init(mode, key);
+        if(parameterSpec.length != 0) {
+            cipher.init(mode, key, parameterSpec[0]);
+        } else {
+            cipher.init(mode, key);
+        }        
         byte[] inputBytes = new byte[inputStream.available()];
         while (inputStream.read(inputBytes) > -1) {
             byte[] outputBytes = cipher.doFinal(inputBytes);

@@ -4,10 +4,11 @@
  */
 package fr.jl.cipher.view;
 
+import fr.jl.cipher.controller.CryptingException;
 import fr.jl.cipher.controller.EncryptionController;
 import fr.jl.cipher.controller.KeysController;
-import fr.jl.cipher.controller.CryptingException;
 import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -328,7 +329,7 @@ public class JfEncryption extends javax.swing.JFrame {
                 try {
                     cryptingAES(filePath, keyPath);
                     jDialogSuccess.setVisible(true);
-                } catch (IOException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | CryptingException e) {
+                } catch (InvalidAlgorithmParameterException | IOException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | CryptingException e) {
                     jDialogError.setVisible(true);
                     jLabelError.setText(e.getMessage());
                 }
@@ -337,7 +338,7 @@ public class JfEncryption extends javax.swing.JFrame {
                 try {
                     cryptingRSA(filePath, keyPath);
                     jDialogSuccess.setVisible(true);
-                } catch (IOException | ClassNotFoundException | InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | CryptingException e) {
+                } catch (InvalidAlgorithmParameterException | IOException | ClassNotFoundException | InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | CryptingException e) {
                     jDialogError.setVisible(true);
                     jLabelError.setText(e.getMessage());
                 }
@@ -477,7 +478,7 @@ public class JfEncryption extends javax.swing.JFrame {
      * @param filePath file to encrypt or decrypt
      * @param keyFilePath key to encrypt or decrypt
      */
-    private void cryptingAES(final String filePath, final String keyFilePath) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException {
+    private void cryptingAES(final String filePath, final String keyFilePath) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
         if (jRadioButtonEncrypt.isSelected()) {
             EncryptionController.encryptAES(filePath, keyFilePath);
         }
@@ -492,7 +493,7 @@ public class JfEncryption extends javax.swing.JFrame {
      * @param filePath file to encrypt or decrypt
      * @param keyFilePath key to encrypt or decrypt
      */
-    private void cryptingRSA(final String filePath, final String keyFilePath) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, ClassNotFoundException, CryptingException {
+    private void cryptingRSA(final String filePath, final String keyFilePath) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, ClassNotFoundException, CryptingException, InvalidAlgorithmParameterException {
         if (jRadioButtonEncrypt.isSelected()) {
             EncryptionController.encryptRSA(filePath, keyFilePath);                  
         }
