@@ -21,7 +21,7 @@ import org.junit.Test;
 /**
  *
  */
-public class EncryptionControllerTestCase extends AbstractEncryptionControllerTestCase {
+public class EncryptionControllerTest extends AbstractEncryptionController {
        
     private static final String PATH = "test\\fr\\jl\\cipher\\resources";    
     private static final String DOC_ENCRYPTED = "doc_encrypted";

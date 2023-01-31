@@ -20,7 +20,7 @@ import org.junit.Test;
 /**
  *
  */
-public class KeysControllerTestCase {
+public class KeysControllerTest {
     
     private static final String PATH = "test\\fr\\jl\\cipher\\resources";    
     private static final String KEY = "key";

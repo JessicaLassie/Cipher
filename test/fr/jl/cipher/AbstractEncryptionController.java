@@ -23,7 +23,7 @@ import static org.junit.Assert.assertNotNull;
 /**
  *
  */
-abstract class AbstractEncryptionControllerTestCase {
+abstract class AbstractEncryptionController {
     
     private static final String PATH = "test\\fr\\jl\\cipher\\resources";
     private static final String FILE_TO_ENCRYPT = "doc.txt";
