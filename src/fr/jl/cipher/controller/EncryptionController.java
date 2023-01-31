@@ -293,7 +293,7 @@ public class EncryptionController {
         FileOutputStream outputStream = new FileOutputStream(outputFile);
         Cipher cipher = Cipher.getInstance(algorithm);
         if(parameterSpec.length != 0) {
-            cipher.init(mode, key, parameterSpec[0]);
+            cipher.init(mode, key);
         } else {
             cipher.init(mode, key);
         }        
