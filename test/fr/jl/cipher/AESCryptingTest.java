@@ -19,9 +19,9 @@ import org.junit.After;
 import org.junit.Test;
 
 /**
- *
+ * Tests for AESEncryption
  */
-public class EncryptionControllerTest extends AbstractEncryptionController {
+public class AESCryptingTest extends AbstractEncryptionController {
        
     private static final String PATH = "test\\fr\\jl\\cipher\\resources";    
     private static final String DOC_ENCRYPTED = "doc_encrypted";
@@ -129,16 +129,5 @@ public class EncryptionControllerTest extends AbstractEncryptionController {
     public void testErrorDecryptAESWithNotExistingFile() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException{        
         verifyErrorDecryptAESWithNotExistingFile();
     }
-    
-    @Test
-    public void testSuccessfullEncryptRSA() throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException, InvalidAlgorithmParameterException{
-        verifySuccessfullEncryptRSA();
-    }
-        
-    @Test
-    public void testSuccessfullDecryptRSA() throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException{
-        verifySuccessfullDecryptRSA();
-    }
-    
     
 }
