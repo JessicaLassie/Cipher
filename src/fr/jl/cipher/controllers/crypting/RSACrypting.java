@@ -32,7 +32,6 @@ import javax.crypto.NoSuchPaddingException;
 public class RSACrypting {
     
     private static final String RSA = "RSA";
-    private static final String MANDATORY_KEY = "Key is mandatory !";
     private static final String EMPTY_KEY = "Key is empty !";
     
     /**
@@ -65,15 +64,11 @@ public class RSACrypting {
         File inputFile = new File(filePath);
         File outputFile = CryptingUtils.preFormating(mode, filePath);  
         
-        if(!keyFilePath.equals("")){
-            if (key != null) {
-                crypting(mode, key, inputFile, outputFile, RSA);
-            } else {
-                throw new CryptingException(EMPTY_KEY);
-            }                   
+        if (key != null) {
+            crypting(mode, key, inputFile, outputFile, RSA);
         } else {
-            throw new CryptingException(MANDATORY_KEY);  
-        }
+            throw new CryptingException(EMPTY_KEY);
+        }                   
     }
     
     /**

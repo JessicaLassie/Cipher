@@ -30,7 +30,6 @@ public class AESCrypting {
     
     private static final String AES = "AES";
     private static final String AES_CBC_PKCS5PADDING = "AES/CBC/PKCS5Padding";
-    private static final String MANDATORY_KEY = "Key is mandatory !";
     private static final String EMPTY_KEY = "Key is empty !";
     
     /**
@@ -51,25 +50,21 @@ public class AESCrypting {
         File inputFile = new File(filePath);
         File outputFile = CryptingUtils.preFormating(mode, filePath);
         
-        if(!keyFilePath.equals("")){
-            try (BufferedReader reader = new BufferedReader(new FileReader(keyFilePath))) {
-                String line;
-                String contentFile = "";
-                while ((line = reader.readLine()) != null) {
-                    contentFile = line;
-                }
-                byte[] encodedKey = Base64.getDecoder().decode(contentFile);                
-                if(encodedKey.length > 0) {
-                    SecretKey key = new SecretKeySpec(encodedKey, 0, encodedKey.length, AES);
-                    IvParameterSpec parameterSpec = new IvParameterSpec(new byte[16]);
-                    crypting(mode, key, inputFile, outputFile, AES_CBC_PKCS5PADDING, parameterSpec);
-                } else {
-                    throw new CryptingException(EMPTY_KEY);
-                }
+        try (BufferedReader reader = new BufferedReader(new FileReader(keyFilePath))) {
+            String line;
+            String contentFile = "";
+            while ((line = reader.readLine()) != null) {
+                contentFile = line;
             }
-        } else {
-            throw new CryptingException(MANDATORY_KEY);             
-        }                   
+            byte[] encodedKey = Base64.getDecoder().decode(contentFile);                
+            if(encodedKey.length > 0) {
+                SecretKey key = new SecretKeySpec(encodedKey, 0, encodedKey.length, AES);
+                IvParameterSpec parameterSpec = new IvParameterSpec(new byte[16]);
+                crypting(mode, key, inputFile, outputFile, AES_CBC_PKCS5PADDING, parameterSpec);
+            } else {
+                throw new CryptingException(EMPTY_KEY);
+            }
+        }                  
     }
     
     /**

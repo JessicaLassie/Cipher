@@ -52,18 +52,6 @@ public class KeysGeneratorsTest {
     }
     
     @Test
-    (expected=NullPointerException.class)
-    public void testErrorGenerateAndSaveAESKeyWithNullPath() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, CryptingException{        
-        KeysGenerators.generateAndSaveKeys(null, AES);
-    }
-    
-    @Test
-    (expected=FileNotFoundException.class)
-    public void testErrorGenerateAndSaveAESKeyWithNotExistingPath() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, CryptingException{        
-        KeysGenerators.generateAndSaveKeys("FolderWhoNotExist", AES);
-    }
-    
-    @Test
     public void testSuccessfullGenerateAndSaveRSAKeys() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, CryptingException{        
         KeysGenerators.generateAndSaveKeys(PATH, RSA);
         File dir = new File(PATH);
@@ -77,26 +65,32 @@ public class KeysGeneratorsTest {
     }
     
     @Test
-    (expected=NullPointerException.class)
-    public void testErrorGenerateAndSaveRSAKeysWithNullPath() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, CryptingException{        
-        KeysGenerators.generateAndSaveKeys(null, RSA);
+    (expected=CryptingException.class)
+    public void testErrorGenerateAndSaveKeysWithNullPath() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, CryptingException{        
+        KeysGenerators.generateAndSaveKeys(null, AES);
     }
     
     @Test
     (expected=FileNotFoundException.class)
-    public void testErrorGenerateAndSaveRSAKeysWithNotExistingPath() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, CryptingException{        
-        KeysGenerators.generateAndSaveKeys("FolderWhoNotExist", RSA);
+    public void testErrorGenerateAndSaveKeysWithNotExistingPath() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, CryptingException{        
+        KeysGenerators.generateAndSaveKeys("FolderWhoNotExist", AES);
     }
     
     @Test
-    (expected=NullPointerException.class)
+    (expected=CryptingException.class)
+    public void testErrorGenerateAndSaveKeysWithEmptyPath() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, CryptingException{        
+        KeysGenerators.generateAndSaveKeys("", AES);
+    }
+      
+    @Test
+    (expected=CryptingException.class)
     public void testErrorGenerateAndSaveKeysWithNullAlgorithm() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, CryptingException{        
         KeysGenerators.generateAndSaveKeys(PATH, null);
     }
     
     @Test
     (expected=CryptingException.class)
-    public void testErrorGenerateAndSaveRSAWithNotExistingAlgorithm() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, CryptingException{        
+    public void testErrorGenerateAndSaveWithNotExistingAlgorithm() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, CryptingException{        
         KeysGenerators.generateAndSaveKeys(PATH, "algoNotExist");
     }
     

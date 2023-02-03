@@ -4,26 +4,35 @@
  */
 package fr.jl.cipher.controllers.keys;
 
+import fr.jl.cipher.controllers.common.Utils;
 import fr.jl.cipher.controllers.crypting.CryptingException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Objects;
 
 /**
- *
+ * Class for the keys generation
  */
 public class KeysGenerators {
     
-    private static final String MANDATORY_OUTPUT_FOLDER = "Output folder is mandatory !";
-    private static final String MANDATORY_ALGORITHM = "Algorithm is mandatory !";
+    private static final String MANDATORY_OUTPUT_FOLDER = "output folder";
+    private static final String MANDATORY_ALGORITHM = "algorithm";
     private static final String ALGORITHM_NOT_SUPPORTED = "Algorithm is not supported !";
     private static final String RSA = "RSA";
     private static final String AES = "AES";
     
+    /**
+     * Generate and save the keys
+     * @param outputPath the path for save the keys
+     * @param algorithm algorithm for the keys
+     * @throws NoSuchAlgorithmException
+     * @throws IOException
+     * @throws InvalidKeySpecException
+     * @throws CryptingException 
+     */
     public static void generateAndSaveKeys(String outputPath, String algorithm) throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, CryptingException {
-        Objects.requireNonNull(outputPath, MANDATORY_OUTPUT_FOLDER);
-        Objects.requireNonNull(algorithm, MANDATORY_ALGORITHM);
+        Utils.checkMandatoryValue(outputPath, MANDATORY_OUTPUT_FOLDER);
+        Utils.checkMandatoryValue(algorithm, MANDATORY_ALGORITHM);
         
         switch (algorithm) {
             case AES:

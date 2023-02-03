@@ -66,7 +66,7 @@ public class CryptingTest extends AbstractCrypting {
     }
     
     @Test
-    (expected=NullPointerException.class)
+    (expected=CryptingException.class)
     public void testErrorEncryptWithNullAlgorithm() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, CryptingException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, ClassNotFoundException{        
         Crypting.encrypt(null, FILE_PATH, AES_KEY_PATH);
     }
@@ -78,7 +78,7 @@ public class CryptingTest extends AbstractCrypting {
     }
     
     @Test
-    (expected=NullPointerException.class)
+    (expected=CryptingException.class)
     public void testErrorEncryptWithNullKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException, InvalidKeySpecException, ClassNotFoundException{        
         Crypting.encrypt(AES, FILE_PATH, null);
     }
@@ -108,7 +108,7 @@ public class CryptingTest extends AbstractCrypting {
     }
     
     @Test
-    (expected=NullPointerException.class)
+    (expected=CryptingException.class)
     public void testErrorEncryptWithNullFile() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException, InvalidKeySpecException, ClassNotFoundException{        
         Crypting.encrypt(AES, null, AES_KEY_PATH);
     }
@@ -132,7 +132,7 @@ public class CryptingTest extends AbstractCrypting {
     }
     
     @Test
-    (expected=NullPointerException.class)
+    (expected=CryptingException.class)
     public void testErrorDecryptWithNullKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException, InvalidKeySpecException, InvalidAlgorithmParameterException{        
         Crypting.decrypt(AES, FILE_PATH_TO_DECRYPT, null);
     }
@@ -162,7 +162,7 @@ public class CryptingTest extends AbstractCrypting {
     }
     
     @Test
-    (expected=NullPointerException.class)
+    (expected=CryptingException.class)
     public void testErrorDecryptWithNullFile() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException, InvalidKeySpecException, ClassNotFoundException{        
         Crypting.decrypt(AES, null, AES_KEY_PATH);
     }
@@ -174,7 +174,7 @@ public class CryptingTest extends AbstractCrypting {
     }
     
     @Test
-    (expected=NullPointerException.class)
+    (expected=CryptingException.class)
     public void testErrorDecryptWithNullAlgorithm() throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, CryptingException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException, ClassNotFoundException{        
         Crypting.decrypt(null, FILE_PATH, AES_KEY_PATH);
     }

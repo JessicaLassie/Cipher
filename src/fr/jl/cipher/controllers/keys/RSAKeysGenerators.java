@@ -56,8 +56,8 @@ public class RSAKeysGenerators {
     
     /**
      * Save private key in a text file
-     * @param keyPair
-     * @param keysFilesPath
+     * @param keyPair RSA key pair who contains private and public keys
+     * @param keysFilesPath the path for save the RSA keys
      * @throws InvalidKeySpecException
      * @throws NoSuchAlgorithmException 
      * @throws IOException
