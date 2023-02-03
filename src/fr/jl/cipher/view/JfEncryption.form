@@ -6,7 +6,7 @@
     </Component>
     <Component class="javax.swing.JFileChooser" name="jFileChooser">
     </Component>
-    <Container class="javax.swing.JDialog" name="jDialogError">
+    <Container class="javax.swing.JDialog" name="jDialog">
       <Properties>
         <Property name="title" type="java.lang.String" value="Error"/>
       </Properties>
@@ -16,12 +16,12 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jLabelError" pref="230" max="32767" attributes="0"/>
+                  <Component id="jLabelDialog" pref="230" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jButtonDialogError" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonDialog" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -30,78 +30,26 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jLabelError" min="-2" pref="56" max="-2" attributes="0"/>
+                  <Component id="jLabelDialog" min="-2" pref="56" max="-2" attributes="0"/>
                   <EmptySpace pref="18" max="32767" attributes="0"/>
-                  <Component id="jButtonDialogError" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonDialog" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="jLabelError">
+        <Component class="javax.swing.JLabel" name="jLabelDialog">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButtonDialogError">
+        <Component class="javax.swing.JButton" name="jButtonDialog">
           <Properties>
             <Property name="text" type="java.lang.String" value="OK"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonDialogErrorActionPerformed"/>
-          </Events>
-        </Component>
-      </SubComponents>
-    </Container>
-    <Container class="javax.swing.JDialog" name="jDialogSuccess">
-      <Properties>
-        <Property name="title" type="java.lang.String" value="Success"/>
-      </Properties>
-
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabelSuccess" min="-2" pref="150" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
-                          <Component id="jButtonDialogSuccess" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jLabelSuccess" pref="39" max="32767" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jButtonDialogSuccess" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-      </Layout>
-      <SubComponents>
-        <Component class="javax.swing.JLabel" name="jLabelSuccess">
-          <Properties>
-            <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" value="Success"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="jButtonDialogSuccess">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="OK"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonDialogSuccessActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonDialogActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

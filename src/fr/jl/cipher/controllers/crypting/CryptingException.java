@@ -2,7 +2,7 @@
  * Copyright (C) Jessica LASSIE from 2020 to present
  * All rights reserved
  */
-package fr.jl.cipher.controller;
+package fr.jl.cipher.controllers.crypting;
 
 /**
  * Exception who can occurs during encryption or decryption

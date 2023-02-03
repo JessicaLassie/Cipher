@@ -4,10 +4,9 @@
  */
 package fr.jl.cipher.view;
 
-import fr.jl.cipher.controller.AESCrypting;
-import fr.jl.cipher.controller.CryptingException;
-import fr.jl.cipher.controller.KeysController;
-import fr.jl.cipher.controller.RSACrypting;
+import fr.jl.cipher.controllers.crypting.Crypting;
+import fr.jl.cipher.controllers.crypting.CryptingException;
+import fr.jl.cipher.controllers.keys.KeysGenerators;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -42,12 +41,8 @@ public class JfEncryption extends javax.swing.JFrame {
         jRadioButtonEncrypt.setSelected(true);
         jComboBoxAlgorithm.addItem(AES);
         jComboBoxAlgorithm.addItem(RSA);
-        jDialogError.setSize(400, 140);
-        jDialogError.setLocationRelativeTo(null);
-        jDialogError.setIconImage(new ImageIcon(SRC_PATH + ERROR_ICON).getImage());
-        jDialogSuccess.setSize(170, 140);
-        jDialogSuccess.setLocationRelativeTo(null);
-        jDialogSuccess.setIconImage(new ImageIcon(SRC_PATH + SUCCESS_ICON).getImage());
+        jDialog.setSize(400, 140);
+        jDialog.setLocationRelativeTo(null);
         jTextFieldSelectedFile.setEditable(false);
         jTextFieldSelectedKey.setEditable(false);
         jButtonStart.setEnabled(false);
@@ -67,12 +62,9 @@ public class JfEncryption extends javax.swing.JFrame {
 
         buttonGroup = new javax.swing.ButtonGroup();
         jFileChooser = new javax.swing.JFileChooser();
-        jDialogError = new javax.swing.JDialog();
-        jLabelError = new javax.swing.JLabel();
-        jButtonDialogError = new javax.swing.JButton();
-        jDialogSuccess = new javax.swing.JDialog();
-        jLabelSuccess = new javax.swing.JLabel();
-        jButtonDialogSuccess = new javax.swing.JButton();
+        jDialog = new javax.swing.JDialog();
+        jLabelDialog = new javax.swing.JLabel();
+        jButtonDialog = new javax.swing.JButton();
         jFileKeyChooser = new javax.swing.JFileChooser();
         jFolderGeneratedFilesKeysChooser = new javax.swing.JFileChooser();
         jLabelFile = new javax.swing.JLabel();
@@ -93,73 +85,37 @@ public class JfEncryption extends javax.swing.JFrame {
         jButtonSearchKey = new javax.swing.JButton();
         jButtonGenerateKeys = new javax.swing.JButton();
 
-        jDialogError.setTitle("Error");
+        jDialog.setTitle("Error");
 
-        jLabelError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelDialog.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        jButtonDialogError.setText("OK");
-        jButtonDialogError.addActionListener(new java.awt.event.ActionListener() {
+        jButtonDialog.setText("OK");
+        jButtonDialog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDialogErrorActionPerformed(evt);
+                jButtonDialogActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jDialogErrorLayout = new javax.swing.GroupLayout(jDialogError.getContentPane());
-        jDialogError.getContentPane().setLayout(jDialogErrorLayout);
-        jDialogErrorLayout.setHorizontalGroup(
-            jDialogErrorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jDialogErrorLayout.createSequentialGroup()
+        javax.swing.GroupLayout jDialogLayout = new javax.swing.GroupLayout(jDialog.getContentPane());
+        jDialog.getContentPane().setLayout(jDialogLayout);
+        jDialogLayout.setHorizontalGroup(
+            jDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialogLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelError, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                .addComponent(jLabelDialog, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDialogErrorLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDialogLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonDialogError)
+                .addComponent(jButtonDialog)
                 .addGap(100, 100, 100))
         );
-        jDialogErrorLayout.setVerticalGroup(
-            jDialogErrorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jDialogErrorLayout.createSequentialGroup()
+        jDialogLayout.setVerticalGroup(
+            jDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialogLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelError, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabelDialog, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addComponent(jButtonDialogError)
-                .addContainerGap())
-        );
-
-        jDialogSuccess.setTitle("Success");
-
-        jLabelSuccess.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelSuccess.setText("Success");
-
-        jButtonDialogSuccess.setText("OK");
-        jButtonDialogSuccess.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDialogSuccessActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jDialogSuccessLayout = new javax.swing.GroupLayout(jDialogSuccess.getContentPane());
-        jDialogSuccess.getContentPane().setLayout(jDialogSuccessLayout);
-        jDialogSuccessLayout.setHorizontalGroup(
-            jDialogSuccessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jDialogSuccessLayout.createSequentialGroup()
-                .addGroup(jDialogSuccessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jDialogSuccessLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabelSuccess, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jDialogSuccessLayout.createSequentialGroup()
-                        .addGap(62, 62, 62)
-                        .addComponent(jButtonDialogSuccess)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jDialogSuccessLayout.setVerticalGroup(
-            jDialogSuccessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jDialogSuccessLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabelSuccess, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonDialogSuccess)
+                .addComponent(jButtonDialog)
                 .addContainerGap())
         );
 
@@ -325,43 +281,36 @@ public class JfEncryption extends javax.swing.JFrame {
     private void jButtonStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStartActionPerformed
         final String filePath = jTextFieldSelectedFile.getText();
         final String keyPath = jTextFieldSelectedKey.getText();
-        String mode;
+        final String algorithm = jComboBoxAlgorithm.getSelectedItem().toString();
+
         if (jRadioButtonEncrypt.isSelected()) {
-            mode = jRadioButtonEncrypt.getText();
+            try {
+                Crypting.encrypt(algorithm, filePath, keyPath);
+                jDialog.setVisible(true);
+                jLabelDialog.setText("Success");
+                jDialog.setIconImage(new ImageIcon(SRC_PATH + SUCCESS_ICON).getImage());
+            } catch (ClassNotFoundException | InvalidKeySpecException | InvalidAlgorithmParameterException | IOException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | CryptingException e) {
+                jDialog.setVisible(true);
+                jDialog.setIconImage(new ImageIcon(SRC_PATH + ERROR_ICON).getImage());
+                jLabelDialog.setText(e.getMessage());
+            }
         } else {
-            mode = jRadioButtonDecrypt.getText();
-        }
-        switch (jComboBoxAlgorithm.getSelectedItem().toString()) {
-            case AES:
-                try {
-                    AESCrypting.cryptingAES(filePath, keyPath, mode);
-                    jDialogSuccess.setVisible(true);
-                } catch (InvalidAlgorithmParameterException | IOException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | CryptingException e) {
-                    jDialogError.setVisible(true);
-                    jLabelError.setText(e.getMessage());
-                }
-                break;
-            case RSA:                
-                try {
-                    RSACrypting.cryptingRSA(filePath, keyPath, mode);
-                    jDialogSuccess.setVisible(true);
-                } catch (InvalidAlgorithmParameterException | IOException | ClassNotFoundException | InvalidKeyException | NoSuchAlgorithmException | InvalidKeySpecException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | CryptingException e) {
-                    jDialogError.setVisible(true);
-                    jLabelError.setText(e.getMessage());
-                }
-                break;
-            default :
-                break;
+            try {
+                Crypting.decrypt(algorithm, filePath, keyPath);
+                jDialog.setVisible(true);
+                jLabelDialog.setText("Success");
+                jDialog.setIconImage(new ImageIcon(SRC_PATH + SUCCESS_ICON).getImage());
+            } catch (ClassNotFoundException | InvalidKeySpecException | InvalidAlgorithmParameterException | IOException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | CryptingException e) {
+                jDialog.setVisible(true);
+                jDialog.setIconImage(new ImageIcon(SRC_PATH + ERROR_ICON).getImage());
+                jLabelDialog.setText(e.getMessage());
+            }
         }
     }//GEN-LAST:event_jButtonStartActionPerformed
 
-    private void jButtonDialogErrorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDialogErrorActionPerformed
-        jDialogError.setVisible(false);
-    }//GEN-LAST:event_jButtonDialogErrorActionPerformed
-
-    private void jButtonDialogSuccessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDialogSuccessActionPerformed
-        jDialogSuccess.setVisible(false);
-    }//GEN-LAST:event_jButtonDialogSuccessActionPerformed
+    private void jButtonDialogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDialogActionPerformed
+        jDialog.setVisible(false);
+    }//GEN-LAST:event_jButtonDialogActionPerformed
 
     private void jButtonClearKeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearKeyActionPerformed
         jTextFieldSelectedKey.setText("");
@@ -391,31 +340,21 @@ public class JfEncryption extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSearchKeyActionPerformed
 
     private void jButtonGenerateKeysActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenerateKeysActionPerformed
+        final String algorithm = jComboBoxAlgorithm.getSelectedItem().toString();
         jFolderGeneratedFilesKeysChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         final int value = jFolderGeneratedFilesKeysChooser.showSaveDialog(this);       
         if(value == JFileChooser.APPROVE_OPTION){
-            switch (jComboBoxAlgorithm.getSelectedItem().toString()) {
-            case AES:
-                try {
-                    KeysController.generateAndSaveAESKey(jFolderGeneratedFilesKeysChooser.getSelectedFile().getAbsolutePath());
-                    jDialogSuccess.setVisible(true);
-                } catch (NoSuchAlgorithmException | IOException e) {
-                    jDialogError.setVisible(true);
-                    jLabelError.setText(e.getMessage());
-                }
-                break;
-            case RSA:                
-                try {
-                    KeysController.generateAndSaveRSAKeys(jFolderGeneratedFilesKeysChooser.getSelectedFile().getAbsolutePath());
-                    jDialogSuccess.setVisible(true);
-                } catch (NoSuchAlgorithmException | InvalidKeySpecException | IOException e) {
-                    jDialogError.setVisible(true);
-                    jLabelError.setText(e.getMessage());
-                }
-                break;
-            default :
-                break;
-            }           
+            try {
+                String outputPath = jFolderGeneratedFilesKeysChooser.getSelectedFile().getAbsolutePath();
+                KeysGenerators.generateAndSaveKeys(outputPath, algorithm);
+                jDialog.setVisible(true);
+                jLabelDialog.setText("Success");
+                jDialog.setIconImage(new ImageIcon(SRC_PATH + SUCCESS_ICON).getImage());
+            } catch (CryptingException | InvalidKeySpecException | NoSuchAlgorithmException | IOException e) {
+                jDialog.setVisible(true);
+                jDialog.setIconImage(new ImageIcon(SRC_PATH + ERROR_ICON).getImage());
+                jLabelDialog.setText(e.getMessage());
+            }
         }        
     }//GEN-LAST:event_jButtonGenerateKeysActionPerformed
 
@@ -454,23 +393,20 @@ public class JfEncryption extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup;
     private javax.swing.JButton jButtonClearFile;
     private javax.swing.JButton jButtonClearKey;
-    private javax.swing.JButton jButtonDialogError;
-    private javax.swing.JButton jButtonDialogSuccess;
+    private javax.swing.JButton jButtonDialog;
     private javax.swing.JButton jButtonGenerateKeys;
     private javax.swing.JButton jButtonSearchFile;
     private javax.swing.JButton jButtonSearchKey;
     private javax.swing.JButton jButtonStart;
     private javax.swing.JComboBox<String> jComboBoxAlgorithm;
-    private javax.swing.JDialog jDialogError;
-    private javax.swing.JDialog jDialogSuccess;
+    private javax.swing.JDialog jDialog;
     private javax.swing.JFileChooser jFileChooser;
     private javax.swing.JFileChooser jFileKeyChooser;
     private javax.swing.JFileChooser jFolderGeneratedFilesKeysChooser;
+    private javax.swing.JLabel jLabelDialog;
     private javax.swing.JLabel jLabelEncrypt;
-    private javax.swing.JLabel jLabelError;
     private javax.swing.JLabel jLabelFile;
     private javax.swing.JLabel jLabelKey;
-    private javax.swing.JLabel jLabelSuccess;
     private javax.swing.JRadioButton jRadioButtonDecrypt;
     private javax.swing.JRadioButton jRadioButtonEncrypt;
     private javax.swing.JSeparator jSeparator1;

@@ -2,17 +2,19 @@
  * Copyright (C) Jessica LASSIE from 2020 to present
  * All rights reserved
  */
-package fr.jl.cipher.controller;
+package fr.jl.cipher.controllers.crypting;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-import java.util.Objects;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -28,9 +30,7 @@ public class AESCrypting {
     
     private static final String AES = "AES";
     private static final String AES_CBC_PKCS5PADDING = "AES/CBC/PKCS5Padding";
-    private static final String MANDATORY_FILE_CRYPTING = "File to crypting is mandatory !";
     private static final String MANDATORY_KEY = "Key is mandatory !";
-    private static final String MANDATORY_MODE = "Mode is mandatory !";
     private static final String EMPTY_KEY = "Key is empty !";
     
     /**
@@ -47,18 +47,9 @@ public class AESCrypting {
      * @throws CryptingException 
      * @throws InvalidAlgorithmParameterException 
      */
-    public static void cryptingAES(final String filePath, final String keyFilePath, final String mode) throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {
-        Objects.requireNonNull(filePath, MANDATORY_FILE_CRYPTING);
-        Objects.requireNonNull(keyFilePath, MANDATORY_KEY);
-        Objects.requireNonNull(mode, MANDATORY_MODE);
-
-        int cryptingMode = Cipher.ENCRYPT_MODE;       
-        if(mode.toLowerCase().equals("decrypt")){
-            cryptingMode = Cipher.DECRYPT_MODE;
-        }
-               
+    protected static void cryptingAES(final String filePath, final String keyFilePath, final int mode) throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {              
         File inputFile = new File(filePath);
-        File outputFile = CryptingUtils.preFormating(cryptingMode, filePath);
+        File outputFile = CryptingUtils.preFormating(mode, filePath);
         
         if(!keyFilePath.equals("")){
             try (BufferedReader reader = new BufferedReader(new FileReader(keyFilePath))) {
@@ -71,7 +62,7 @@ public class AESCrypting {
                 if(encodedKey.length > 0) {
                     SecretKey key = new SecretKeySpec(encodedKey, 0, encodedKey.length, AES);
                     IvParameterSpec parameterSpec = new IvParameterSpec(new byte[16]);
-                    Crypting.crypting(cryptingMode, key, inputFile, outputFile, AES_CBC_PKCS5PADDING, parameterSpec);
+                    crypting(mode, key, inputFile, outputFile, AES_CBC_PKCS5PADDING, parameterSpec);
                 } else {
                     throw new CryptingException(EMPTY_KEY);
                 }
@@ -81,4 +72,33 @@ public class AESCrypting {
         }                   
     }
     
+    /**
+     * Encrypt or decrypt a file
+     * @param mode encrypt or decrypt mode
+     * @param key key for encrypt or decrypt
+     * @param inputFile file to encrypt or decrypt
+     * @param outputFile encrypted file or decrypted file
+     * @param algorithm algorithm of crypting
+     * @param parameterSpec IV parameter
+     * @throws IOException
+     * @throws InvalidKeyException
+     * @throws NoSuchAlgorithmException
+     * @throws NoSuchPaddingException
+     * @throws IllegalBlockSizeException
+     * @throws BadPaddingException 
+     * @throws InvalidAlgorithmParameterException 
+     */    
+    private static void crypting(final int mode, final Key key, File inputFile, File outputFile, final String algorithm, final IvParameterSpec parameterSpec) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
+        FileInputStream inputStream = new FileInputStream(inputFile); 
+        FileOutputStream outputStream = new FileOutputStream(outputFile);
+        Cipher cipher = Cipher.getInstance(algorithm);
+        cipher.init(mode, key, parameterSpec);
+        byte[] inputBytes = new byte[inputStream.available()];
+        while (inputStream.read(inputBytes) > -1) {
+            byte[] outputBytes = cipher.doFinal(inputBytes);
+            outputStream.write(outputBytes);           
+        }
+        inputStream.close();
+        outputStream.close();
+    }
 }

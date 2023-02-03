@@ -2,15 +2,13 @@
  * Copyright (C) Jessica LASSIE from 2020 to present
  * All rights reserved
  */
-package fr.jl.cipher.controller;
+package fr.jl.cipher.controllers.keys;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.Writer;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -19,38 +17,18 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.text.SimpleDateFormat;
-import java.util.Base64;
 import java.util.Date;
-import java.util.Objects;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 
 /**
- *
+ * RSA Keys Generators
  */
-public class KeysController {
+public class RSAKeysGenerators {
     
-    private static final String MANDATORY_OUTPUT_FOLDER = "Output folder is mandatory !";
-    private static final String KEY = "\\key_";
+    private static final String RSA = "RSA";
     private static final String PUBLIC_KEY = "\\public_key_";
     private static final String PRIVATE_KEY = "\\private_key_";
     private static final String TXT_EXTENSION = ".txt";
-    
-    private static final String AES = "AES";
-    private static final String RSA = "RSA";
     private static final String DATE_FORMAT = "yyyyMMddHHmmss";
-    
-    /**
-     * Generate and save the AES key
-     * @param outputPath the path for save the AES key
-     * @throws NoSuchAlgorithmException
-     * @throws IOException 
-     */
-    public static void generateAndSaveAESKey(String outputPath) throws NoSuchAlgorithmException, IOException{
-        Objects.requireNonNull(outputPath, MANDATORY_OUTPUT_FOLDER);
-        SecretKey key = generateAESKey();
-        saveAESKey(key, outputPath);
-    }
     
     /**
      * Generate and save the RSA keys
@@ -59,40 +37,9 @@ public class KeysController {
      * @throws InvalidKeySpecException
      * @throws IOException 
      */
-    public static void generateAndSaveRSAKeys(String outputPath) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
-        Objects.requireNonNull(outputPath, MANDATORY_OUTPUT_FOLDER);
-        
+    protected static void generateAndSaveRSAKeys(String outputPath) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {      
         KeyPair keyPair = generateRSAKeyPair();
         saveRSAKeyPair(keyPair, outputPath);
-    }
-    
-    /**
-     * Generate key in 256 bits for AES encryption
-     * @return key in 256 bits
-     * @throws NoSuchAlgorithmException 
-     */
-    private static SecretKey generateAESKey() throws NoSuchAlgorithmException {
-        KeyGenerator keyGen = KeyGenerator.getInstance(AES);
-        keyGen.init(256);
-        SecretKey secretKey = keyGen.generateKey();
-        return secretKey;
-    }
-    
-    /**
-     * Save key in a text file
-     * @param key key in 128 bits
-     * @param keyFilePath path for save the key file
-     * @throws IOException
-     */
-    private static void saveAESKey(final SecretKey key, final String keyFilePath) throws IOException {
-        SimpleDateFormat formater = new SimpleDateFormat(DATE_FORMAT);
-        final String date = formater.format(new Date());
-        File keyFile = new File(keyFilePath + KEY + date + TXT_EXTENSION);
-        try (Writer fw = new FileWriter(keyFile.getAbsoluteFile())) {
-            byte encoded[] = key.getEncoded();
-            final String encodedKey = Base64.getEncoder().encodeToString(encoded);
-            fw.write(encodedKey);
-        }            
     }
     
     /**
