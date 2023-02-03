@@ -18,7 +18,7 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 /**
- *
+ * Tests for keys generator
  */
 public class KeysGeneratorsTest {
     

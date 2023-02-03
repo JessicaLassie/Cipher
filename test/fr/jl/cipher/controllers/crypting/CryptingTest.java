@@ -18,7 +18,7 @@ import org.junit.After;
 import org.junit.Test;
 
 /**
- * Tests for AESEncryption
+ * Tests for crypting
  */
 public class CryptingTest extends AbstractCrypting {
        

@@ -19,7 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 
 /**
- *
+ * HMI class
  */
 public class JfEncryption extends javax.swing.JFrame {
     
