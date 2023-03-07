@@ -1,7 +1,7 @@
 ## 2023-01-31
 
 ### Added
-* Button for generate ans save keys
+* Button for generate and save keys
 * Build tests
 
 ### Changed
