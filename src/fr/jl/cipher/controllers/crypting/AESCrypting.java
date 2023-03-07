@@ -32,10 +32,14 @@ public class AESCrypting {
     private static final String AES_CBC_PKCS5PADDING = "AES/CBC/PKCS5Padding";
     private static final String EMPTY_KEY = "Key is empty !";
     
+    private AESCrypting() {
+        throw new IllegalStateException("Utility class");
+    }
+    
     /**
      * Crypting a file in AES 256 bits
-     * @param filePath path of the file to crypting
-     * @param keyFilePath path of the key for crypting
+     * @param fileToCrypting the file to crypting
+     * @param keyFile the key file for crypting
      * @param mode encrypt or decrypt mode
      * @throws NoSuchAlgorithmException
      * @throws IOException
@@ -46,11 +50,11 @@ public class AESCrypting {
      * @throws CryptingException 
      * @throws InvalidAlgorithmParameterException 
      */
-    protected static void cryptingAES(final String filePath, final String keyFilePath, final int mode) throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {              
-        File inputFile = new File(filePath);
-        File outputFile = CryptingUtils.preFormating(mode, filePath);
+    protected static void cryptingAES(final File fileToCrypting, final File keyFile, final int mode) throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException {              
+ 
+        File outputFile = CryptingUtils.preFormating(mode, fileToCrypting);
         
-        try (BufferedReader reader = new BufferedReader(new FileReader(keyFilePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(keyFile))) {
             String line;
             String contentFile = "";
             while ((line = reader.readLine()) != null) {
@@ -60,7 +64,7 @@ public class AESCrypting {
             if(encodedKey.length > 0) {
                 SecretKey key = new SecretKeySpec(encodedKey, 0, encodedKey.length, AES);
                 IvParameterSpec parameterSpec = new IvParameterSpec(new byte[16]);
-                crypting(mode, key, inputFile, outputFile, AES_CBC_PKCS5PADDING, parameterSpec);
+                crypting(mode, key, fileToCrypting, outputFile, AES_CBC_PKCS5PADDING, parameterSpec);
             } else {
                 throw new CryptingException(EMPTY_KEY);
             }
@@ -84,16 +88,14 @@ public class AESCrypting {
      * @throws InvalidAlgorithmParameterException 
      */    
     private static void crypting(final int mode, final Key key, File inputFile, File outputFile, final String algorithm, final IvParameterSpec parameterSpec) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
-        FileInputStream inputStream = new FileInputStream(inputFile); 
-        FileOutputStream outputStream = new FileOutputStream(outputFile);
-        Cipher cipher = Cipher.getInstance(algorithm);
-        cipher.init(mode, key, parameterSpec);
-        byte[] inputBytes = new byte[inputStream.available()];
-        while (inputStream.read(inputBytes) > -1) {
-            byte[] outputBytes = cipher.doFinal(inputBytes);
-            outputStream.write(outputBytes);           
+        try (FileOutputStream outputStream = new FileOutputStream(outputFile);FileInputStream inputStream = new FileInputStream(inputFile)) {
+            Cipher cipher = Cipher.getInstance(algorithm);
+            cipher.init(mode, key, parameterSpec);
+            byte[] inputBytes = new byte[inputStream.available()];
+            while (inputStream.read(inputBytes) > -1) {
+                byte[] outputBytes = cipher.doFinal(inputBytes);           
+                outputStream.write(outputBytes);
+            }
         }
-        inputStream.close();
-        outputStream.close();
     }
 }

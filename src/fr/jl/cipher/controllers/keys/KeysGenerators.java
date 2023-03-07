@@ -21,6 +21,10 @@ public class KeysGenerators {
     private static final String RSA = "RSA";
     private static final String AES = "AES";
     
+    private KeysGenerators() {
+        throw new IllegalStateException("Utility class");
+    }
+    
     /**
      * Generate and save the keys
      * @param outputPath the path for save the keys

@@ -25,6 +25,10 @@ public class AESKeyGenerator {
     private static final String TXT_EXTENSION = ".txt";
     private static final String DATE_FORMAT = "yyyyMMddHHmmss";
     
+    private AESKeyGenerator() {
+        throw new IllegalStateException("Utility class");
+    }
+    
     /**
      * Generate and save the AES key
      * @param outputPath the path for save the AES key
@@ -44,8 +48,7 @@ public class AESKeyGenerator {
     private static SecretKey generateAESKey() throws NoSuchAlgorithmException {
         KeyGenerator keyGen = KeyGenerator.getInstance(AES);
         keyGen.init(256);
-        SecretKey secretKey = keyGen.generateKey();
-        return secretKey;
+        return keyGen.generateKey();
     }
     
     /**
@@ -59,7 +62,7 @@ public class AESKeyGenerator {
         final String date = formater.format(new Date());
         File keyFile = new File(keyFilePath + KEY + date + TXT_EXTENSION);
         try (Writer fw = new FileWriter(keyFile.getAbsoluteFile())) {
-            byte encoded[] = key.getEncoded();
+            byte[] encoded = key.getEncoded();
             final String encodedKey = Base64.getEncoder().encodeToString(encoded);
             fw.write(encodedKey);
         }            

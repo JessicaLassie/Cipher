@@ -34,10 +34,14 @@ public class RSACrypting {
     private static final String RSA = "RSA";
     private static final String EMPTY_KEY = "Key is empty !";
     
+    private RSACrypting() {
+        throw new IllegalStateException("Utility class");
+    }
+    
     /**
      * Crypting a file in RSA
-     * @param filePath path of the file to crypting
-     * @param keyFilePath path of the key for crypting
+     * @param fileToCrypting the file to crypting
+     * @param keyFile the key file for crypting
      * @param mode encrypt or decrypt mode
      * @throws InvalidKeySpecException
      * @throws NoSuchAlgorithmException
@@ -50,22 +54,18 @@ public class RSACrypting {
      * @throws ClassNotFoundException 
      * @throws InvalidAlgorithmParameterException 
      */
-    protected static void cryptingRSA(final String filePath, final String keyFilePath, final int mode) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException, InvalidAlgorithmParameterException {
-        Key key = null;
-        switch (mode) {
-            case 1:
-                key = getRSAPublicKey(keyFilePath);
-                break;
-            case 2:
-                key = getRSAPrivateKey(keyFilePath);
-                break;
+    protected static void cryptingRSA(final File fileToCrypting, final File keyFile, final int mode) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, ClassNotFoundException, InvalidAlgorithmParameterException {
+        Key key;
+        if (mode == 1) {
+            key = getRSAPublicKey(keyFile);
+        } else {
+            key = getRSAPrivateKey(keyFile);
         } 
 
-        File inputFile = new File(filePath);
-        File outputFile = CryptingUtils.preFormating(mode, filePath);  
+        File outputFile = CryptingUtils.preFormating(mode, fileToCrypting);  
         
         if (key != null) {
-            crypting(mode, key, inputFile, outputFile, RSA);
+            crypting(mode, key, fileToCrypting, outputFile, RSA);
         } else {
             throw new CryptingException(EMPTY_KEY);
         }                   
@@ -73,23 +73,26 @@ public class RSACrypting {
     
     /**
      * Get private key for decrypt in RSA
-     * @param keyFilePath private key file path
+     * @param keyFile private key file
      * @return private key
      * @throws IOException
      * @throws ClassNotFoundException
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeySpecException 
      */
-    private static PrivateKey getRSAPrivateKey(final String keyFilePath) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException {
-        FileInputStream fis = new FileInputStream(keyFilePath);
-        BufferedInputStream bis = new BufferedInputStream(fis);       
-        ObjectInputStream ois = new ObjectInputStream(bis);
-        BigInteger modulo = (BigInteger) ois.readObject();
-        BigInteger exposant = (BigInteger) ois.readObject();
-        RSAPrivateKeySpec specification = new RSAPrivateKeySpec(modulo, exposant);
-        KeyFactory factory = KeyFactory.getInstance(RSA);
-        PrivateKey privateKey = factory.generatePrivate(specification);
-        fis.close();
+    private static PrivateKey getRSAPrivateKey(final File keyFile) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException {
+        BufferedInputStream bis;
+        ObjectInputStream ois;
+        PrivateKey privateKey;
+        try (FileInputStream fis = new FileInputStream(keyFile)) {
+            bis = new BufferedInputStream(fis);
+            ois = new ObjectInputStream(bis);
+            BigInteger modulo = (BigInteger) ois.readObject();
+            BigInteger exposant = (BigInteger) ois.readObject();
+            RSAPrivateKeySpec specification = new RSAPrivateKeySpec(modulo, exposant);
+            KeyFactory factory = KeyFactory.getInstance(RSA);
+            privateKey = factory.generatePrivate(specification);
+        }
         bis.close();
         ois.close();
         return privateKey;
@@ -97,23 +100,26 @@ public class RSACrypting {
     
     /**
      * Get public key for encrypt in RSA
-     * @param keyFilePath public key file path
+     * @param keyFile public key file
      * @return public key
      * @throws IOException
      * @throws ClassNotFoundException
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeySpecException 
      */
-    private static PublicKey getRSAPublicKey(final String keyFilePath) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException {
-        FileInputStream fis = new FileInputStream(keyFilePath);
-        BufferedInputStream bis = new BufferedInputStream(fis);       
-        ObjectInputStream ois = new ObjectInputStream(bis);
-        BigInteger modulo = (BigInteger) ois.readObject();
-        BigInteger exposant = (BigInteger) ois.readObject();
-        RSAPublicKeySpec specification = new RSAPublicKeySpec(modulo, exposant);
-        KeyFactory factory = KeyFactory.getInstance(RSA);
-        PublicKey publicKey = factory.generatePublic(specification);
-        fis.close();
+    private static PublicKey getRSAPublicKey(final File keyFile) throws IOException, ClassNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException {
+        BufferedInputStream bis;
+        ObjectInputStream ois;
+        PublicKey publicKey;
+        try (FileInputStream fis = new FileInputStream(keyFile)) {
+            bis = new BufferedInputStream(fis);
+            ois = new ObjectInputStream(bis);
+            BigInteger modulo = (BigInteger) ois.readObject();
+            BigInteger exposant = (BigInteger) ois.readObject();
+            RSAPublicKeySpec specification = new RSAPublicKeySpec(modulo, exposant);
+            KeyFactory factory = KeyFactory.getInstance(RSA);
+            publicKey = factory.generatePublic(specification);
+        }
         bis.close();
         ois.close();
         return publicKey;
@@ -132,19 +138,16 @@ public class RSACrypting {
      * @throws NoSuchPaddingException
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException 
-     * @throws InvalidAlgorithmParameterException 
      */    
-    protected static void crypting(final int mode, final Key key, File inputFile, File outputFile, final String algorithm) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidAlgorithmParameterException {
-        FileInputStream inputStream = new FileInputStream(inputFile); 
-        FileOutputStream outputStream = new FileOutputStream(outputFile);
-        Cipher cipher = Cipher.getInstance(algorithm);
-        cipher.init(mode, key);
-        byte[] inputBytes = new byte[inputStream.available()];
-        while (inputStream.read(inputBytes) > -1) {
-            byte[] outputBytes = cipher.doFinal(inputBytes);
-            outputStream.write(outputBytes);           
+    protected static void crypting(final int mode, final Key key, File inputFile, File outputFile, final String algorithm) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+        try (FileOutputStream outputStream = new FileOutputStream(outputFile);FileInputStream inputStream = new FileInputStream(inputFile)) {
+            Cipher cipher = Cipher.getInstance(algorithm);
+            cipher.init(mode, key);
+            byte[] inputBytes = new byte[inputStream.available()];
+            while (inputStream.read(inputBytes) > -1) {
+                byte[] outputBytes = cipher.doFinal(inputBytes);           
+                outputStream.write(outputBytes);
+            }
         }
-        inputStream.close();
-        outputStream.close();
     }
 }

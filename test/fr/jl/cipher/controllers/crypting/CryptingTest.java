@@ -102,7 +102,7 @@ public class CryptingTest extends AbstractCrypting {
     }
     
     @Test
-    (expected=FileNotFoundException.class)
+    (expected=CryptingException.class)
     public void testErrorEncryptWithNotExistingKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException, ClassNotFoundException, InvalidKeySpecException{        
         Crypting.encrypt(AES, FILE_PATH, "notExistingKey.txt");
     }
@@ -114,7 +114,7 @@ public class CryptingTest extends AbstractCrypting {
     }
     
     @Test
-    (expected=FileNotFoundException.class)
+    (expected=CryptingException.class)
     public void testErrorEncryptWithNotExistingFile() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException, InvalidKeySpecException, ClassNotFoundException{        
         Crypting.encrypt(AES, "notExistingFile.txt", AES_KEY_PATH);
     }
@@ -156,7 +156,7 @@ public class CryptingTest extends AbstractCrypting {
     }
     
     @Test
-    (expected=FileNotFoundException.class)
+    (expected=CryptingException.class)
     public void testErrorDecryptWithNotExistingKey() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException, InvalidKeySpecException, ClassNotFoundException{        
         Crypting.decrypt(AES, FILE_PATH_TO_DECRYPT, "notExistingKey.txt");
     }
@@ -168,7 +168,7 @@ public class CryptingTest extends AbstractCrypting {
     }
     
     @Test
-    (expected=FileNotFoundException.class)
+    (expected=CryptingException.class)
     public void testErrorDecryptWithNotExistingFile() throws NoSuchAlgorithmException, IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, CryptingException, InvalidAlgorithmParameterException, InvalidKeySpecException, ClassNotFoundException{        
         Crypting.decrypt(AES, "notExistingFile.txt", AES_KEY_PATH);
     }

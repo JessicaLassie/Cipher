@@ -14,17 +14,22 @@ import java.util.Date;
 public class CryptingUtils {
     
     private static final String DATE_FORMAT = "yyyyMMddHHmmss";
+    
+    private CryptingUtils() {
+        throw new IllegalStateException("Utility class");
+    }
         
     /**
      * Create format file
      * @param mode encrypt or decrypt mode
-     * @param filePath file path of input file for output file
+     * @param fileToCrypting the file to crypting
      * @return file for encrypt or decrypt output
      */
-    protected static File preFormating(final int mode, final String filePath) {
+    protected static File preFormating(final int mode, final File fileToCrypting) {
         SimpleDateFormat formater = new SimpleDateFormat(DATE_FORMAT);
         final String date = formater.format(new Date());
-        final int pos = filePath.indexOf('.');
+        String path = fileToCrypting.getAbsolutePath();
+        final int pos = path.indexOf('.');
         String modeType = "";
         switch (mode) {
             case 1:
@@ -36,7 +41,7 @@ public class CryptingUtils {
             default :
                 break;
         }
-        return new File(filePath.substring(0, pos) + modeType + date + filePath.substring(pos, filePath.length()));
+        return new File(path.substring(0, pos) + modeType + date + path.substring(pos, path.length()));
     }
     
 }

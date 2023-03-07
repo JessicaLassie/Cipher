@@ -30,6 +30,10 @@ public class RSAKeysGenerators {
     private static final String TXT_EXTENSION = ".txt";
     private static final String DATE_FORMAT = "yyyyMMddHHmmss";
     
+    private RSAKeysGenerators() {
+        throw new IllegalStateException("Utility class");
+    }
+    
     /**
      * Generate and save the RSA keys
      * @param outputPath the path for save the RSA keys
@@ -49,9 +53,8 @@ public class RSAKeysGenerators {
      */
     private static KeyPair generateRSAKeyPair() throws NoSuchAlgorithmException {
         KeyPairGenerator keyGenerator = KeyPairGenerator.getInstance(RSA);
-        keyGenerator.initialize(2048);
-        KeyPair keyPair = keyGenerator.generateKeyPair();           
-        return keyPair;
+        keyGenerator.initialize(2048);        
+        return keyGenerator.generateKeyPair();
     }
     
     /**
@@ -76,17 +79,17 @@ public class RSAKeysGenerators {
         if (rsaPrivateKey != null && rsaPublicKey != null) {
             FileOutputStream fosPrivateKey = new FileOutputStream(privateKeyFile);
             BufferedOutputStream bosPrivateKey = new BufferedOutputStream(fosPrivateKey);
-            ObjectOutputStream outputFilePrivateKey = new ObjectOutputStream(bosPrivateKey);
-            outputFilePrivateKey.writeObject(rsaPrivateKey.getModulus());
-            outputFilePrivateKey.writeObject(rsaPrivateKey.getPrivateExponent());
-            outputFilePrivateKey.close();
+            try (ObjectOutputStream outputFilePrivateKey = new ObjectOutputStream(bosPrivateKey)) {
+                outputFilePrivateKey.writeObject(rsaPrivateKey.getModulus());
+                outputFilePrivateKey.writeObject(rsaPrivateKey.getPrivateExponent());
+            }
             
             FileOutputStream fosPublicKey = new FileOutputStream(publicKeyFile);
             BufferedOutputStream bosPublicKey = new BufferedOutputStream(fosPublicKey);
-            ObjectOutputStream outputFilePublicKey = new ObjectOutputStream(bosPublicKey);
-            outputFilePublicKey.writeObject(rsaPublicKey.getModulus());
-            outputFilePublicKey.writeObject(rsaPublicKey.getPublicExponent());
-            outputFilePublicKey.close();
+            try (ObjectOutputStream outputFilePublicKey = new ObjectOutputStream(bosPublicKey)) {
+                outputFilePublicKey.writeObject(rsaPublicKey.getModulus());
+                outputFilePublicKey.writeObject(rsaPublicKey.getPublicExponent());
+            }
         }
     }
 }

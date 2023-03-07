@@ -25,6 +25,8 @@ public class JfEncryption extends javax.swing.JFrame {
     
     private static final String AES = "AES";
     private static final String RSA = "RSA";
+    private static final String SUCCESS = "Success";
+    private static final String ERROR = "Error";
     private static final String SRC_PATH = "src\\fr\\jl\\cipher\\resources\\";
     private static final String ERROR_ICON = "error_icon.png";
     private static final String SUCCESS_ICON = "success_icon.png";
@@ -287,22 +289,26 @@ public class JfEncryption extends javax.swing.JFrame {
             try {
                 Crypting.encrypt(algorithm, filePath, keyPath);
                 jDialog.setVisible(true);
-                jLabelDialog.setText("Success");
+                jLabelDialog.setText(SUCCESS);
                 jDialog.setIconImage(new ImageIcon(SRC_PATH + SUCCESS_ICON).getImage());
+                jDialog.setTitle(SUCCESS);
             } catch (ClassNotFoundException | InvalidKeySpecException | InvalidAlgorithmParameterException | IOException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | CryptingException e) {
                 jDialog.setVisible(true);
                 jDialog.setIconImage(new ImageIcon(SRC_PATH + ERROR_ICON).getImage());
+                jDialog.setTitle(ERROR);
                 jLabelDialog.setText(e.getMessage());
             }
         } else {
             try {
                 Crypting.decrypt(algorithm, filePath, keyPath);
                 jDialog.setVisible(true);
-                jLabelDialog.setText("Success");
+                jLabelDialog.setText(SUCCESS);
                 jDialog.setIconImage(new ImageIcon(SRC_PATH + SUCCESS_ICON).getImage());
+                jDialog.setTitle(SUCCESS);
             } catch (ClassNotFoundException | InvalidKeySpecException | InvalidAlgorithmParameterException | IOException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | CryptingException e) {
                 jDialog.setVisible(true);
                 jDialog.setIconImage(new ImageIcon(SRC_PATH + ERROR_ICON).getImage());
+                jDialog.setTitle(ERROR);
                 jLabelDialog.setText(e.getMessage());
             }
         }
@@ -348,11 +354,13 @@ public class JfEncryption extends javax.swing.JFrame {
                 String outputPath = jFolderGeneratedFilesKeysChooser.getSelectedFile().getAbsolutePath();
                 KeysGenerators.generateAndSaveKeys(outputPath, algorithm);
                 jDialog.setVisible(true);
-                jLabelDialog.setText("Success");
+                jLabelDialog.setText(SUCCESS);
                 jDialog.setIconImage(new ImageIcon(SRC_PATH + SUCCESS_ICON).getImage());
+                jDialog.setTitle(SUCCESS);
             } catch (CryptingException | InvalidKeySpecException | NoSuchAlgorithmException | IOException e) {
                 jDialog.setVisible(true);
                 jDialog.setIconImage(new ImageIcon(SRC_PATH + ERROR_ICON).getImage());
+                jDialog.setTitle(ERROR);
                 jLabelDialog.setText(e.getMessage());
             }
         }        
