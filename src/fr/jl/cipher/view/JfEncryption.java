@@ -25,11 +25,13 @@ public class JfEncryption extends javax.swing.JFrame {
     
     private static final String AES = "AES";
     private static final String RSA = "RSA";
-    private static final String SUCCESS = "Success";
-    private static final String ERROR = "Error";
+    private static final String SUCCESS_TITLE = "Success";
+    private static final String ERROR_TITLE = "Error";
+    private static final String INFO_TITLE = "Info";
     private static final String SRC_PATH = "src\\fr\\jl\\cipher\\resources\\";
     private static final String ERROR_ICON = "error_icon.png";
     private static final String SUCCESS_ICON = "success_icon.png";
+    private static final String INFO_ICON = "info_icon.png";
     private static final String CIPHER_ICON = "cipher_icon.png";
 
     /**
@@ -87,11 +89,12 @@ public class JfEncryption extends javax.swing.JFrame {
         jButtonSearchKey = new javax.swing.JButton();
         jButtonGenerateKeys = new javax.swing.JButton();
 
-        jDialog.setTitle("Error");
+        jDialog.setModal(true);
 
         jLabelDialog.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         jButtonDialog.setText("OK");
+        jButtonDialog.setAlignmentY(0.0F);
         jButtonDialog.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonDialogActionPerformed(evt);
@@ -104,12 +107,10 @@ public class JfEncryption extends javax.swing.JFrame {
             jDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDialogLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelDialog, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                .addGroup(jDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jButtonDialog)
+                    .addComponent(jLabelDialog, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDialogLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonDialog)
-                .addGap(100, 100, 100))
         );
         jDialogLayout.setVerticalGroup(
             jDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -157,14 +158,14 @@ public class JfEncryption extends javax.swing.JFrame {
             }
         });
 
-        jButtonSearchFile.setText("...");
+        jButtonSearchFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fr/jl/cipher/resources/search_icon.png"))); // NOI18N
         jButtonSearchFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonSearchFileActionPerformed(evt);
             }
         });
 
-        jButtonSearchKey.setText("...");
+        jButtonSearchKey.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fr/jl/cipher/resources/search_icon.png"))); // NOI18N
         jButtonSearchKey.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonSearchKeyActionPerformed(evt);
@@ -187,7 +188,6 @@ public class JfEncryption extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButtonStart, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,14 +205,16 @@ public class JfEncryption extends javax.swing.JFrame {
                                 .addGap(1, 1, 1))
                             .addComponent(jSeparator2)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jTextFieldSelectedFile, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jButtonSearchFile)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButtonClearFile))
-                                    .addComponent(jLabelFile, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jButtonStart, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                            .addComponent(jTextFieldSelectedFile, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(jButtonSearchFile)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jButtonClearFile))
+                                        .addComponent(jLabelFile, javax.swing.GroupLayout.Alignment.LEADING)))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(43, 43, 43))
                     .addGroup(layout.createSequentialGroup()
@@ -254,19 +256,20 @@ public class JfEncryption extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextFieldSelectedKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButtonSearchKey))
-                    .addComponent(jButtonClearKey, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jButtonClearKey, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(20, 20, 20)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelFile)
                 .addGap(8, 8, 8)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
-                    .addComponent(jTextFieldSelectedFile)
-                    .addComponent(jButtonSearchFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonClearFile, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButtonClearFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextFieldSelectedFile)
+                        .addComponent(jButtonSearchFile)))
+                .addGap(27, 27, 27)
                 .addComponent(jButtonStart)
-                .addGap(35, 35, 35))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
@@ -286,29 +289,41 @@ public class JfEncryption extends javax.swing.JFrame {
 
         if (jRadioButtonEncrypt.isSelected()) {
             try {
+                /*
+                jDialog.setIconImage(new ImageIcon(SRC_PATH + INFO_ICON).getImage());
+                jDialog.setTitle(INFO_TITLE);
+                jLabelDialog.setText("Encryption in progress...");
+                jDialog.setVisible(true);
+                */
                 Crypting.encrypt(algorithm, filePath, keyPath);
-                jDialog.setVisible(true);
-                jLabelDialog.setText(SUCCESS);
                 jDialog.setIconImage(new ImageIcon(SRC_PATH + SUCCESS_ICON).getImage());
-                jDialog.setTitle(SUCCESS);
+                jDialog.setTitle(SUCCESS_TITLE);
+                jLabelDialog.setText("File encrypted !");
+                jDialog.setVisible(true);                
             } catch (ClassNotFoundException | InvalidKeySpecException | InvalidAlgorithmParameterException | IOException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | CryptingException e) {
-                jDialog.setVisible(true);
                 jDialog.setIconImage(new ImageIcon(SRC_PATH + ERROR_ICON).getImage());
-                jDialog.setTitle(ERROR);
+                jDialog.setTitle(ERROR_TITLE);
                 jLabelDialog.setText(e.getMessage());
+                jDialog.setVisible(true);
             }
         } else {
             try {
+                /*
+                jDialog.setIconImage(new ImageIcon(SRC_PATH + INFO_ICON).getImage());
+                jDialog.setTitle(INFO_TITLE);
+                jLabelDialog.setText("Decryption in progress...");
+                jDialog.setVisible(true);
+                */
                 Crypting.decrypt(algorithm, filePath, keyPath);
-                jDialog.setVisible(true);
-                jLabelDialog.setText(SUCCESS);
                 jDialog.setIconImage(new ImageIcon(SRC_PATH + SUCCESS_ICON).getImage());
-                jDialog.setTitle(SUCCESS);
-            } catch (ClassNotFoundException | InvalidKeySpecException | InvalidAlgorithmParameterException | IOException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | CryptingException e) {
+                jDialog.setTitle(SUCCESS_TITLE);
+                jLabelDialog.setText("File decrypted !");
                 jDialog.setVisible(true);
+            } catch (ClassNotFoundException | InvalidKeySpecException | InvalidAlgorithmParameterException | IOException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | CryptingException e) {
                 jDialog.setIconImage(new ImageIcon(SRC_PATH + ERROR_ICON).getImage());
-                jDialog.setTitle(ERROR);
+                jDialog.setTitle(ERROR_TITLE);
                 jLabelDialog.setText(e.getMessage());
+                jDialog.setVisible(true);
             }
         }
     }//GEN-LAST:event_jButtonStartActionPerformed
@@ -350,17 +365,24 @@ public class JfEncryption extends javax.swing.JFrame {
         final int value = jFolderGeneratedFilesKeysChooser.showSaveDialog(this);       
         if(value == JFileChooser.APPROVE_OPTION){
             try {
+                /*
+                jDialog.setIconImage(new ImageIcon(SRC_PATH + INFO_ICON).getImage());
+                jDialog.setTitle(INFO_TITLE);
+                jLabelDialog.setText("Generation of key(s) in progress...");
+                jButtonDialog.setVisible(false);
+                jDialog.setVisible(true);
+                */
                 String outputPath = jFolderGeneratedFilesKeysChooser.getSelectedFile().getAbsolutePath();
                 KeysGenerators.generateAndSaveKeys(outputPath, algorithm);
-                jDialog.setVisible(true);
-                jLabelDialog.setText(SUCCESS);
                 jDialog.setIconImage(new ImageIcon(SRC_PATH + SUCCESS_ICON).getImage());
-                jDialog.setTitle(SUCCESS);
-            } catch (CryptingException | InvalidKeySpecException | NoSuchAlgorithmException | IOException e) {
+                jDialog.setTitle(SUCCESS_TITLE);
+                jLabelDialog.setText("Key(s) generated !");
                 jDialog.setVisible(true);
+            } catch (CryptingException | InvalidKeySpecException | NoSuchAlgorithmException | IOException e) {               
                 jDialog.setIconImage(new ImageIcon(SRC_PATH + ERROR_ICON).getImage());
-                jDialog.setTitle(ERROR);
+                jDialog.setTitle(ERROR_TITLE);
                 jLabelDialog.setText(e.getMessage());
+                jDialog.setVisible(true);
             }
         }        
     }//GEN-LAST:event_jButtonGenerateKeysActionPerformed
