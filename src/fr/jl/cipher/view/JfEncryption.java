@@ -89,8 +89,6 @@ public class JfEncryption extends javax.swing.JFrame {
         jButtonSearchKey = new javax.swing.JButton();
         jButtonGenerateKeys = new javax.swing.JButton();
 
-        jDialog.setModal(true);
-
         jLabelDialog.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         jButtonDialog.setText("OK");
@@ -289,12 +287,10 @@ public class JfEncryption extends javax.swing.JFrame {
 
         if (jRadioButtonEncrypt.isSelected()) {
             try {
-                /*
                 jDialog.setIconImage(new ImageIcon(SRC_PATH + INFO_ICON).getImage());
                 jDialog.setTitle(INFO_TITLE);
                 jLabelDialog.setText("Encryption in progress...");
                 jDialog.setVisible(true);
-                */
                 Crypting.encrypt(algorithm, filePath, keyPath);
                 jDialog.setIconImage(new ImageIcon(SRC_PATH + SUCCESS_ICON).getImage());
                 jDialog.setTitle(SUCCESS_TITLE);
@@ -365,13 +361,11 @@ public class JfEncryption extends javax.swing.JFrame {
         final int value = jFolderGeneratedFilesKeysChooser.showSaveDialog(this);       
         if(value == JFileChooser.APPROVE_OPTION){
             try {
-                /*
                 jDialog.setIconImage(new ImageIcon(SRC_PATH + INFO_ICON).getImage());
                 jDialog.setTitle(INFO_TITLE);
                 jLabelDialog.setText("Generation of key(s) in progress...");
                 jButtonDialog.setVisible(false);
                 jDialog.setVisible(true);
-                */
                 String outputPath = jFolderGeneratedFilesKeysChooser.getSelectedFile().getAbsolutePath();
                 KeysGenerators.generateAndSaveKeys(outputPath, algorithm);
                 jDialog.setIconImage(new ImageIcon(SRC_PATH + SUCCESS_ICON).getImage());
