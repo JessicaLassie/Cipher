@@ -25,11 +25,10 @@ public class JfEncryption extends javax.swing.JFrame {
     
     private static final String AES = "AES";
     private static final String RSA = "RSA";
-    private static final String SUCCESS = "Success";
-    private static final String ERROR = "Error";
     private static final String SRC_PATH = "src\\fr\\jl\\cipher\\resources\\";
     private static final String ERROR_ICON = "error_icon.png";
     private static final String SUCCESS_ICON = "success_icon.png";
+    private static final String INFO_ICON = "info_icon.png";
     private static final String CIPHER_ICON = "cipher_icon.png";
 
     /**
@@ -43,14 +42,12 @@ public class JfEncryption extends javax.swing.JFrame {
         jRadioButtonEncrypt.setSelected(true);
         jComboBoxAlgorithm.addItem(AES);
         jComboBoxAlgorithm.addItem(RSA);
-        jDialog.setSize(400, 140);
-        jDialog.setLocationRelativeTo(null);
         jTextFieldSelectedFile.setEditable(false);
         jTextFieldSelectedKey.setEditable(false);
         jButtonStart.setEnabled(false);
-        setLocationRelativeTo(null);
-        setIconImage(new ImageIcon(SRC_PATH + CIPHER_ICON).getImage());
-        
+        jDialogSuccess.setLocationRelativeTo(this);
+        jDialogInProgress.setLocationRelativeTo(this);
+        jDialogError.setLocationRelativeTo(this);
     }
 
     /**
@@ -64,11 +61,16 @@ public class JfEncryption extends javax.swing.JFrame {
 
         buttonGroup = new javax.swing.ButtonGroup();
         jFileChooser = new javax.swing.JFileChooser();
-        jDialog = new javax.swing.JDialog();
-        jLabelDialog = new javax.swing.JLabel();
-        jButtonDialog = new javax.swing.JButton();
+        jDialogSuccess = new javax.swing.JDialog();
+        jLabelDialogSuccess = new javax.swing.JLabel();
+        jButtonDialogSuccess = new javax.swing.JButton();
         jFileKeyChooser = new javax.swing.JFileChooser();
         jFolderGeneratedFilesKeysChooser = new javax.swing.JFileChooser();
+        jDialogInProgress = new javax.swing.JDialog();
+        jLabelDialogInProgress = new javax.swing.JLabel();
+        jDialogError = new javax.swing.JDialog();
+        jLabelDialogError = new javax.swing.JLabel();
+        jButtonDialogError = new javax.swing.JButton();
         jLabelFile = new javax.swing.JLabel();
         jButtonClearFile = new javax.swing.JButton();
         jButtonStart = new javax.swing.JButton();
@@ -87,42 +89,111 @@ public class JfEncryption extends javax.swing.JFrame {
         jButtonSearchKey = new javax.swing.JButton();
         jButtonGenerateKeys = new javax.swing.JButton();
 
-        jDialog.setTitle("Error");
+        jDialogSuccess.setTitle("Success");
+        jDialogSuccess.setIconImage(new ImageIcon(SRC_PATH + SUCCESS_ICON).getImage());
+        jDialogSuccess.setLocation(new java.awt.Point(0, 0));
+        jDialogSuccess.setMaximumSize(null);
+        jDialogSuccess.setModal(true);
+        jDialogSuccess.setResizable(false);
+        jDialogSuccess.setSize(new java.awt.Dimension(220, 150));
 
-        jLabelDialog.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelDialogSuccess.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        jButtonDialog.setText("OK");
-        jButtonDialog.addActionListener(new java.awt.event.ActionListener() {
+        jButtonDialogSuccess.setText("OK");
+        jButtonDialogSuccess.setAlignmentY(0.0F);
+        jButtonDialogSuccess.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDialogActionPerformed(evt);
+                jButtonDialogSuccessActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jDialogLayout = new javax.swing.GroupLayout(jDialog.getContentPane());
-        jDialog.getContentPane().setLayout(jDialogLayout);
-        jDialogLayout.setHorizontalGroup(
-            jDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jDialogLayout.createSequentialGroup()
+        javax.swing.GroupLayout jDialogSuccessLayout = new javax.swing.GroupLayout(jDialogSuccess.getContentPane());
+        jDialogSuccess.getContentPane().setLayout(jDialogSuccessLayout);
+        jDialogSuccessLayout.setHorizontalGroup(
+            jDialogSuccessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialogSuccessLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelDialog, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                .addGroup(jDialogSuccessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jButtonDialogSuccess)
+                    .addComponent(jLabelDialogSuccess, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDialogLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonDialog)
-                .addGap(100, 100, 100))
         );
-        jDialogLayout.setVerticalGroup(
-            jDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jDialogLayout.createSequentialGroup()
+        jDialogSuccessLayout.setVerticalGroup(
+            jDialogSuccessLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialogSuccessLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelDialog, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabelDialogSuccess, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonDialogSuccess)
+                .addContainerGap())
+        );
+
+        jDialogInProgress.setTitle("Info");
+        jDialogInProgress.setIconImage(new ImageIcon(SRC_PATH + INFO_ICON).getImage());
+        jDialogInProgress.setLocation(new java.awt.Point(0, 0));
+        jDialogInProgress.setPreferredSize(new java.awt.Dimension(280, 119));
+        jDialogInProgress.setResizable(false);
+        jDialogInProgress.setSize(new java.awt.Dimension(220, 120));
+
+        jLabelDialogInProgress.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        javax.swing.GroupLayout jDialogInProgressLayout = new javax.swing.GroupLayout(jDialogInProgress.getContentPane());
+        jDialogInProgress.getContentPane().setLayout(jDialogInProgressLayout);
+        jDialogInProgressLayout.setHorizontalGroup(
+            jDialogInProgressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialogInProgressLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelDialogInProgress, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jDialogInProgressLayout.setVerticalGroup(
+            jDialogInProgressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialogInProgressLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelDialogInProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jDialogError.setTitle("Error");
+        jDialogError.setIconImage(new ImageIcon(SRC_PATH + ERROR_ICON).getImage());
+        jDialogError.setModal(true);
+        jDialogError.setResizable(false);
+        jDialogError.setSize(new java.awt.Dimension(250, 150));
+
+        jLabelDialogError.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        jButtonDialogError.setText("OK");
+        jButtonDialogError.setAlignmentY(0.0F);
+        jButtonDialogError.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDialogErrorActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jDialogErrorLayout = new javax.swing.GroupLayout(jDialogError.getContentPane());
+        jDialogError.getContentPane().setLayout(jDialogErrorLayout);
+        jDialogErrorLayout.setHorizontalGroup(
+            jDialogErrorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialogErrorLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jDialogErrorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jButtonDialogError)
+                    .addComponent(jLabelDialogError, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jDialogErrorLayout.setVerticalGroup(
+            jDialogErrorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialogErrorLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelDialogError, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addComponent(jButtonDialog)
+                .addComponent(jButtonDialogError)
                 .addContainerGap())
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cipher");
+        setIconImage(new ImageIcon(SRC_PATH + CIPHER_ICON).getImage());
         setResizable(false);
         setSize(new java.awt.Dimension(431, 213));
 
@@ -157,14 +228,14 @@ public class JfEncryption extends javax.swing.JFrame {
             }
         });
 
-        jButtonSearchFile.setText("...");
+        jButtonSearchFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fr/jl/cipher/resources/search_icon.png"))); // NOI18N
         jButtonSearchFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonSearchFileActionPerformed(evt);
             }
         });
 
-        jButtonSearchKey.setText("...");
+        jButtonSearchKey.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fr/jl/cipher/resources/search_icon.png"))); // NOI18N
         jButtonSearchKey.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonSearchKeyActionPerformed(evt);
@@ -187,7 +258,6 @@ public class JfEncryption extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButtonStart, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,14 +275,16 @@ public class JfEncryption extends javax.swing.JFrame {
                                 .addGap(1, 1, 1))
                             .addComponent(jSeparator2)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jTextFieldSelectedFile, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jButtonSearchFile)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jButtonClearFile))
-                                    .addComponent(jLabelFile, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jButtonStart, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                            .addComponent(jTextFieldSelectedFile, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(jButtonSearchFile)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jButtonClearFile))
+                                        .addComponent(jLabelFile, javax.swing.GroupLayout.Alignment.LEADING)))
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(43, 43, 43))
                     .addGroup(layout.createSequentialGroup()
@@ -254,22 +326,24 @@ public class JfEncryption extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextFieldSelectedKey, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButtonSearchKey))
-                    .addComponent(jButtonClearKey, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jButtonClearKey, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(20, 20, 20)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabelFile)
                 .addGap(8, 8, 8)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
-                    .addComponent(jTextFieldSelectedFile)
-                    .addComponent(jButtonSearchFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButtonClearFile, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButtonClearFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextFieldSelectedFile)
+                        .addComponent(jButtonSearchFile)))
+                .addGap(27, 27, 27)
                 .addComponent(jButtonStart)
-                .addGap(35, 35, 35))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonClearFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearFileActionPerformed
@@ -286,36 +360,34 @@ public class JfEncryption extends javax.swing.JFrame {
 
         if (jRadioButtonEncrypt.isSelected()) {
             try {
+                jLabelDialogInProgress.setText("Encryption in progress...");
+                jDialogInProgress.setVisible(true);
                 Crypting.encrypt(algorithm, filePath, keyPath);
-                jDialog.setVisible(true);
-                jLabelDialog.setText(SUCCESS);
-                jDialog.setIconImage(new ImageIcon(SRC_PATH + SUCCESS_ICON).getImage());
-                jDialog.setTitle(SUCCESS);
+                jDialogInProgress.setVisible(false);
+                jLabelDialogSuccess.setText("File encrypted !");
+                jDialogSuccess.setVisible(true);                
             } catch (ClassNotFoundException | InvalidKeySpecException | InvalidAlgorithmParameterException | IOException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | CryptingException e) {
-                jDialog.setVisible(true);
-                jDialog.setIconImage(new ImageIcon(SRC_PATH + ERROR_ICON).getImage());
-                jDialog.setTitle(ERROR);
-                jLabelDialog.setText(e.getMessage());
+                jLabelDialogError.setText(e.getMessage());
+                jDialogError.setVisible(true);
             }
         } else {
             try {
+                jLabelDialogInProgress.setText("Decryption in progress...");
+                jDialogInProgress.setVisible(true);
                 Crypting.decrypt(algorithm, filePath, keyPath);
-                jDialog.setVisible(true);
-                jLabelDialog.setText(SUCCESS);
-                jDialog.setIconImage(new ImageIcon(SRC_PATH + SUCCESS_ICON).getImage());
-                jDialog.setTitle(SUCCESS);
+                jDialogInProgress.setVisible(false);
+                jLabelDialogSuccess.setText("File decrypted !");
+                jDialogSuccess.setVisible(true);
             } catch (ClassNotFoundException | InvalidKeySpecException | InvalidAlgorithmParameterException | IOException | InvalidKeyException | NoSuchAlgorithmException | BadPaddingException | IllegalBlockSizeException | NoSuchPaddingException | CryptingException e) {
-                jDialog.setVisible(true);
-                jDialog.setIconImage(new ImageIcon(SRC_PATH + ERROR_ICON).getImage());
-                jDialog.setTitle(ERROR);
-                jLabelDialog.setText(e.getMessage());
+                jLabelDialogError.setText(e.getMessage());
+                jDialogError.setVisible(true);
             }
         }
     }//GEN-LAST:event_jButtonStartActionPerformed
 
-    private void jButtonDialogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDialogActionPerformed
-        jDialog.setVisible(false);
-    }//GEN-LAST:event_jButtonDialogActionPerformed
+    private void jButtonDialogSuccessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDialogSuccessActionPerformed
+        jDialogSuccess.setVisible(false);
+    }//GEN-LAST:event_jButtonDialogSuccessActionPerformed
 
     private void jButtonClearKeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearKeyActionPerformed
         jTextFieldSelectedKey.setText("");
@@ -350,20 +422,23 @@ public class JfEncryption extends javax.swing.JFrame {
         final int value = jFolderGeneratedFilesKeysChooser.showSaveDialog(this);       
         if(value == JFileChooser.APPROVE_OPTION){
             try {
+                jLabelDialogInProgress.setText("Generation of key(s) in progress...");
+                jDialogInProgress.setVisible(true);
                 String outputPath = jFolderGeneratedFilesKeysChooser.getSelectedFile().getAbsolutePath();
                 KeysGenerators.generateAndSaveKeys(outputPath, algorithm);
-                jDialog.setVisible(true);
-                jLabelDialog.setText(SUCCESS);
-                jDialog.setIconImage(new ImageIcon(SRC_PATH + SUCCESS_ICON).getImage());
-                jDialog.setTitle(SUCCESS);
-            } catch (CryptingException | InvalidKeySpecException | NoSuchAlgorithmException | IOException e) {
-                jDialog.setVisible(true);
-                jDialog.setIconImage(new ImageIcon(SRC_PATH + ERROR_ICON).getImage());
-                jDialog.setTitle(ERROR);
-                jLabelDialog.setText(e.getMessage());
+                jDialogInProgress.setVisible(false);
+                jLabelDialogSuccess.setText("Key(s) generated !");
+                jDialogSuccess.setVisible(true);
+            } catch (CryptingException | InvalidKeySpecException | NoSuchAlgorithmException | IOException e) {               
+                jLabelDialogError.setText(e.getMessage());
+                jDialogError.setVisible(true);
             }
         }        
     }//GEN-LAST:event_jButtonGenerateKeysActionPerformed
+
+    private void jButtonDialogErrorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDialogErrorActionPerformed
+        jDialogError.setVisible(false);
+    }//GEN-LAST:event_jButtonDialogErrorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -400,17 +475,22 @@ public class JfEncryption extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup;
     private javax.swing.JButton jButtonClearFile;
     private javax.swing.JButton jButtonClearKey;
-    private javax.swing.JButton jButtonDialog;
+    private javax.swing.JButton jButtonDialogError;
+    private javax.swing.JButton jButtonDialogSuccess;
     private javax.swing.JButton jButtonGenerateKeys;
     private javax.swing.JButton jButtonSearchFile;
     private javax.swing.JButton jButtonSearchKey;
     private javax.swing.JButton jButtonStart;
     private javax.swing.JComboBox<String> jComboBoxAlgorithm;
-    private javax.swing.JDialog jDialog;
+    private javax.swing.JDialog jDialogError;
+    private javax.swing.JDialog jDialogInProgress;
+    private javax.swing.JDialog jDialogSuccess;
     private javax.swing.JFileChooser jFileChooser;
     private javax.swing.JFileChooser jFileKeyChooser;
     private javax.swing.JFileChooser jFolderGeneratedFilesKeysChooser;
-    private javax.swing.JLabel jLabelDialog;
+    private javax.swing.JLabel jLabelDialogError;
+    private javax.swing.JLabel jLabelDialogInProgress;
+    private javax.swing.JLabel jLabelDialogSuccess;
     private javax.swing.JLabel jLabelEncrypt;
     private javax.swing.JLabel jLabelFile;
     private javax.swing.JLabel jLabelKey;
