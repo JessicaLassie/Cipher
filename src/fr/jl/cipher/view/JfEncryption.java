@@ -45,6 +45,9 @@ public class JfEncryption extends javax.swing.JFrame {
         jTextFieldSelectedFile.setEditable(false);
         jTextFieldSelectedKey.setEditable(false);
         jButtonStart.setEnabled(false);
+        jDialogSuccess.setLocationRelativeTo(this);
+        jDialogInProgress.setLocationRelativeTo(this);
+        jDialogError.setLocationRelativeTo(this);
     }
 
     /**
