@@ -1,3 +1,8 @@
+## 2023-04-22
+
+### Added
+* Display of a dialog during the generation of the keys and encryption/decryption
+
 ## 2023-01-31
 
 ### Added
