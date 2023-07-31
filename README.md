@@ -19,7 +19,7 @@ Cf CHANGELOG.md
 ### Executables and environment variables
 - Java 8
 - JCE Policy 8
-- Apache Ant
+- Apache Ant 1.8.0
 
 ## Developpers
 
