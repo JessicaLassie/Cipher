@@ -17,7 +17,9 @@ Cf CHANGELOG.md
 ## Executables environment
 
 ### Executables and environment variables
-At least Java 8 and JCE Policy 8
+- Java 8
+- JCE Policy 8
+- Apache Ant
 
 ## Developpers
 
@@ -26,4 +28,7 @@ At least Java 8 and JCE Policy 8
 
 ### App launch
 `java -jar "Cipher.jar"`
+
+### Tests launch
+TO DO
 
